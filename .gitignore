@@ -8,3 +8,4 @@ target
 **/target/**
 logs/
 .g8
+/project/build.properties
