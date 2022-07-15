@@ -1,0 +1,10 @@
+target
+/.bsp
+/.idea
+/logs
+/RUNNING_PID
+.idea
+/target
+**/target/**
+logs/
+.g8
