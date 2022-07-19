@@ -8,3 +8,5 @@ target
 **/target/**
 logs/
 .g8
+project/project
+

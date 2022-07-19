@@ -1,26 +1,44 @@
-ThisBuild / scalaVersion := "2.13.8"
+import Dependencies.{addedDependencies, defaultDependencies}
 
 ThisBuild / version := "1.0-SNAPSHOT"
 
+name := """chien_dq_bbs_backend"""
+
+lazy val commonSettings = Seq(
+  scalaVersion := "2.13.8",
+  libraryDependencies ++= defaultDependencies,
+  libraryDependencies ++= addedDependencies,
+  Compile / scalaSource := baseDirectory.value / "src" / "main" / "scala",
+  Test / scalaSource := baseDirectory.value / "src" / "test" / "scala",
+  Compile / resourceDirectory := baseDirectory.value / "src" / "main" / "resources",
+  Test / resourceDirectory := baseDirectory.value / "src" / "test" / "resources"
+)
+
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
-  .settings(
-    name := """chien_dq_bbs_backend""",
-    libraryDependencies ++= Seq(
-      guice,
-      // Evolution
-      evolutions,
+  .disablePlugins(PlayLayoutPlugin)
+  .dependsOn(application,domain,port,utility)
+  .aggregate(application,domain,port,utility)
+  .settings(commonSettings)
 
-      "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test,
-      "mysql" % "mysql-connector-java" % "8.0.29",
-      jdbc,
-      "org.scalikejdbc" %% "scalikejdbc" % "3.5.0",
-      "org.scalikejdbc" %% "scalikejdbc-config" % "3.5.0",
-      "org.scalikejdbc" %% "scalikejdbc-play-initializer" % "2.8.0-scalikejdbc-3.5",
+lazy val application = (project in file("app/application"))
+  .enablePlugins(PlayScala)
+  .disablePlugins(PlayLayoutPlugin)
+  .settings(commonSettings)
 
-      "org.skinny-framework" %% "skinny-framework" % "3.1.0",
+lazy val domain = (project in file("app/domain"))
+  .enablePlugins(PlayScala)
+  .disablePlugins(PlayLayoutPlugin)
+  .settings(commonSettings)
 
-      specs2 % Test
-    )
-  )
+lazy val port = (project in file("app/port"))
+  .enablePlugins(PlayScala)
+  .disablePlugins(PlayLayoutPlugin)
+  .settings(commonSettings)
+
+lazy val utility = (project in file("app/utility"))
+  .enablePlugins(PlayScala)
+  .disablePlugins(PlayLayoutPlugin)
+  .settings(commonSettings)
 

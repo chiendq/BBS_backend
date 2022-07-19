@@ -1,4 +1,4 @@
-package controllers
+package bbs.controllers
 
 import play.api.mvc.{AnyContent, BaseController, ControllerComponents, Request}
 
@@ -10,6 +10,6 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
 
     def index() = Action { implicit request: Request[AnyContent] =>
 
-      Ok
+      Ok("Application")
   }
 }
