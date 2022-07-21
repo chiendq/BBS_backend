@@ -10,4 +10,4 @@ case class Post(id: PostId,
                 createdAt: DateTime,
                 updatedOn: DateTime,
                 thumbnail: String,
-                account: Account)
+                account: Option[Account] = None)
