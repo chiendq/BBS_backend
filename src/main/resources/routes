@@ -1,3 +1,6 @@
 # Routes
 
-GET     /                           controllers.HomeController.index()
+POST     /accounts/login                           controllers.AccountController.login()
+
+
+GET     /posts                              controllers.PostController.getAllPost()
