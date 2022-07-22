@@ -1,5 +1,0 @@
-package common
-
-trait ValueObject {
-
-}

@@ -1,6 +1,6 @@
 # Routes
 
-POST     /accounts/login                           controllers.AccountController.login()
-
-
-GET     /posts                              controllers.PostController.getAllPost()
+GET     /posts                              application.controllers.PostController.getPaginationPost(pageSize: Int ?= 10, pageNumber: Int ?= 1)
+GET     /posts/:id                          application.controllers.PostController.getPostById(id: String)
+POST    /posts                              application.controllers.PostController.createPost()
+#GET     /assets/images/*file
