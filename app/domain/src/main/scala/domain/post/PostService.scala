@@ -6,7 +6,7 @@ import domain.post.model.{Post, PostId}
 import scala.util.Try
 
 trait PostService {
-  def createPost(postCreation: PostCreation): Option[PostId]
+  def createPost(postCreation: PostCreation): Try[PostId]
 
   def getPostById(id: String): Option[Post]
 
@@ -15,4 +15,6 @@ trait PostService {
   def validatePageSize(pageSize: Int): Boolean
 
   def validatePageNumber(pageNumber: Int): Boolean
+
+  def validatePostCreation(postCreation: PostCreation): Boolean
 }

@@ -13,6 +13,7 @@ class PostController @Inject()(postService: PostService, val controllerComponent
 
   import application.implicitFormat.PostFormat._
   import application.implicitFormat.PostCreationFormat._
+
   def getPaginationPost(pageSize: Int, pageNumber: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     val posts = postService.getPagination(pageSize, pageNumber).get
     Ok(Json.toJson(posts)(seqPostDtoFormat))
@@ -32,7 +33,7 @@ class PostController @Inject()(postService: PostService, val controllerComponent
       postService.createPost(postCreation)
     } match {
       case Success(value) => Ok
-      case Failure(exception) => BadRequest
+      case Failure(exception) => BadRequest("Cannot created")
     }
   }
 }

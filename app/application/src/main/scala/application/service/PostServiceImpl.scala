@@ -3,14 +3,11 @@ package application.service
 import domain.post.dto.PostCreation
 import domain.post.{PostRepository, PostService}
 import domain.post.model.{Post, PostId}
-import infrastructure.mySqlDao.PostDao
-import skinny.Pagination
 
 import javax.inject.{Inject, Singleton}
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 
 // NEED TO BE VALIDATED HERE
-
 
 /**
  * Use Value Object to help validation
@@ -34,7 +31,12 @@ class PostServiceImpl @Inject()(postRepository: PostRepository) extends PostServ
 
   override def getPostById(id: String): Option[Post] = postRepository.getPostById(id)
 
-  override def createPost(postCreation: PostCreation): Option[PostId] = {
+  override def createPost(postCreation: PostCreation): Try[PostId] = {
     postRepository.createPost(postCreation)
   }
+
+  /**
+   * NOT IMPLEMENTED
+   */
+  override def validatePostCreation(postCreation: PostCreation): Boolean = ???
 }

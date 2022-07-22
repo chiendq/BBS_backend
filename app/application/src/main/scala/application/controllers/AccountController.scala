@@ -16,7 +16,7 @@ class AccountController @Inject()(val controllerComponents: ControllerComponents
 
   def login: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Try {
-      throw RequestTypeNotMatchException()
+      throw RequestTypeNotMatchException("Wrong request type")
     } match {
       case Success(value) => Ok
       case Failure(exception) => BadRequest
