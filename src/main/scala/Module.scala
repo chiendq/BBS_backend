@@ -1,5 +1,5 @@
 import application.repository.{AccountRepositoryImpl, PostRepositoryImpl}
-import application.service.{AccountServiceImpl, PostServiceImpl}
+import application.services.{AccountServiceImpl, PostServiceImpl}
 import com.google.inject.AbstractModule
 import domain.account.{AccountRepository, AccountService}
 import domain.post.{PostRepository, PostService}

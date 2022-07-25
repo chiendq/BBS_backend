@@ -2,5 +2,8 @@
 
 GET     /posts                              application.controllers.PostController.getPaginationPost(pageSize: Int ?= 10, pageNumber: Int ?= 1)
 GET     /posts/:id                          application.controllers.PostController.getPostById(id: String)
++ nocsrf
 POST    /posts                              application.controllers.PostController.createPost()
+
+POST    /login                              application.controllers.AuthController.login()
 #GET     /assets/images/*file

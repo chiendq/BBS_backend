@@ -1,14 +1,20 @@
 package application.controllers
 
+import application.controllers.actions.AuthActions
 import domain.post.PostService
 import domain.post.dto.PostCreation
 import play.api.Logger
 import play.api.libs.json.Json
 import play.api.mvc._
+
 import javax.inject._
 import scala.util.{Failure, Success, Try}
 @Singleton
-class PostController @Inject()(postService: PostService, val controllerComponents: ControllerComponents) extends BaseController {
+class PostController @Inject()(authActions: AuthActions,
+                               postService: PostService,
+                               controllerComponents: ControllerComponents)
+  extends AbstractController(controllerComponents) {
+
   lazy val logger: Logger = Logger(getClass)
 
   import application.implicitFormat.PostFormat._
@@ -26,7 +32,7 @@ class PostController @Inject()(postService: PostService, val controllerComponent
     }
   }
 
-  def createPost(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+  def createPost(): Action[AnyContent] = authActions { implicit request: Request[AnyContent] =>
     Try{
       val jsonBody = request.body.asJson.get
       val postCreation = jsonBody.as[PostCreation]

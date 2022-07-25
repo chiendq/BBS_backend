@@ -1,4 +1,4 @@
-package application.service
+package application.services
 
 import domain.post.dto.PostCreation
 import domain.post.{PostRepository, PostService}
@@ -16,7 +16,7 @@ import scala.util.{Failure, Success, Try}
 class PostServiceImpl @Inject()(postRepository: PostRepository) extends PostService{
 
   /**
-   * Not validated yet
+   * TODO : validate
    */
   override def getPagination(pageSize: Int, pageNumber: Int): Try[Seq[Post]] =Try{
     postRepository.findAllWithPagination(pageSize, pageNumber)
@@ -27,6 +27,11 @@ class PostServiceImpl @Inject()(postRepository: PostRepository) extends PostServ
     else true
   }
 
+  /**
+   * TODO: Validate page number
+   * @param pageNumber
+   * @return
+   */
   override def validatePageNumber(pageNumber: Int): Boolean = ???
 
   override def getPostById(id: String): Option[Post] = postRepository.getPostById(id)
@@ -36,7 +41,7 @@ class PostServiceImpl @Inject()(postRepository: PostRepository) extends PostServ
   }
 
   /**
-   * NOT IMPLEMENTED
+   * TODO: validate PostCreation
    */
   override def validatePostCreation(postCreation: PostCreation): Boolean = ???
 }

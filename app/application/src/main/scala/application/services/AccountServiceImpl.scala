@@ -1,4 +1,4 @@
-package application.service
+package application.services
 
 import domain.account.AccountService
 import domain.account.model.AccountId
