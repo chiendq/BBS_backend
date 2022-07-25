@@ -1,7 +1,7 @@
 package application.services
 
+import application.controllers.payload.LoginPayload
 import application.jwt.SecurityConstants._
-import application.payload.LoginPayload
 import io.jsonwebtoken.{Claims, Jwts, SignatureAlgorithm}
 import play.api.Configuration
 import skinny.logging.Logger
@@ -10,7 +10,7 @@ import java.util.Date
 import javax.inject.{Inject, Singleton}
 import scala.util.Try
 import com.github.t3hnar.bcrypt._
-import domain.account.{AccountRepository, AccountService}
+import domain.account.{AccountRepository}
 @Singleton
 class AuthService @Inject()(config: Configuration,
                             accountRepo : AccountRepository) {

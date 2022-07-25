@@ -6,7 +6,8 @@ import domain.post.model.{Post, PostId}
 import scala.util.Try
 
 trait PostService {
-  def createPost(postCreation: PostCreation): Try[PostId]
+  def createPost(title: String, author: String, content: String, accountId: String, thumbnail: String): Try[PostId]
+
 
   def getPostById(id: String): Option[Post]
 

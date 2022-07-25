@@ -46,7 +46,7 @@ class PostRepositoryImpl @Inject()(accountService: AccountService) extends PostR
         Symbol("authorName") -> postCreation.author,
         Symbol("createdAt") -> currentDateTime,
         Symbol("updatedOn") -> currentDateTime,
-        Symbol("thumbnail") -> "/public/images/thumbnails/123",
+        Symbol("thumbnail") -> postCreation.thumbnail,
         Symbol("accountId") -> postCreation.accountId
       )
     }

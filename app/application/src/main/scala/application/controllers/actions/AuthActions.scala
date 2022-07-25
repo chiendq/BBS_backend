@@ -1,6 +1,6 @@
 package application.controllers.actions
 
-import application.payload.UserRequest
+import application.controllers.payload.UserRequest
 import play.api.http.HeaderNames
 import play.api.mvc._
 import application.services.AuthService

@@ -1,6 +1,6 @@
 package application.controllers
 
-import application.payload.RegisterForm.registerForm
+import application.controllers.payload.RegisterForm.registerForm
 import application.services.AccountServiceImpl
 import play.api.Logger
 import play.api.mvc._

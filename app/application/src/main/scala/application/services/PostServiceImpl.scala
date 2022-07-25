@@ -36,12 +36,13 @@ class PostServiceImpl @Inject()(postRepository: PostRepository) extends PostServ
 
   override def getPostById(id: String): Option[Post] = postRepository.getPostById(id)
 
-  override def createPost(postCreation: PostCreation): Try[PostId] = {
-    postRepository.createPost(postCreation)
-  }
-
   /**
    * TODO: validate PostCreation
    */
   override def validatePostCreation(postCreation: PostCreation): Boolean = ???
+
+  override def createPost(title: String, author: String, content: String, accountId: String, thumbnail: String): Try[PostId] = {
+    val postCreation = PostCreation(title, author,content,accountId,thumbnail)
+    postRepository.createPost(postCreation)
+  }
 }

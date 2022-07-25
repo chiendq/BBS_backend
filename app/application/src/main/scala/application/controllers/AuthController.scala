@@ -1,8 +1,8 @@
 package application.controllers
 
+import application.controllers.payload.LoginPayload
 import application.implicitFormat.LoginRequestFormat
 import application.jwt.SecurityConstants
-import application.payload.LoginPayload
 import application.services.AuthService
 import play.api.http.HttpEntity
 import play.api.mvc._

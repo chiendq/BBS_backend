@@ -1,4 +1,4 @@
-package application.payload
+package application.controllers.payload
 
 import play.api.data.Form
 import play.api.data.Forms.{email, mapping, nonEmptyText, number, text}

@@ -1,6 +1,6 @@
 package application.implicitFormat
 
-import application.payload.LoginPayload
+import application.controllers.payload.LoginPayload
 import play.api.libs.json.{Json, OFormat}
 
 object LoginRequestFormat{
