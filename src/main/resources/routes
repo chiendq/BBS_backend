@@ -5,5 +5,7 @@ GET     /posts/:id                          application.controllers.PostControll
 + nocsrf
 POST    /posts                              application.controllers.PostController.createPost()
 
+
 POST    /login                              application.controllers.AuthController.login()
+POST    /register                           application.controllers.AccountController.register()
 #GET     /assets/images/*file

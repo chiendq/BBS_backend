@@ -1,15 +1,19 @@
 package application.services
 
 import application.jwt.SecurityConstants._
-import application.payload.LoginRequest
+import application.payload.LoginPayload
 import io.jsonwebtoken.{Claims, Jwts, SignatureAlgorithm}
 import play.api.Configuration
 import skinny.logging.Logger
+
 import java.util.Date
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import scala.util.Try
 import com.github.t3hnar.bcrypt._
-class AuthService @Inject()(config: Configuration) {
+import domain.account.{AccountRepository, AccountService}
+@Singleton
+class AuthService @Inject()(config: Configuration,
+                            accountRepo : AccountRepository) {
   val logger: Logger = Logger(getClass)
 
   def validateJwt(token: String): Try[Claims] = {
@@ -21,12 +25,22 @@ class AuthService @Inject()(config: Configuration) {
     }
   }
 
-  def generateJwtToken(loginRequest: LoginRequest): String = {
+  def generateJwtToken(loginRequest: LoginPayload): String = {
     Jwts.builder()
-      .setSubject(loginRequest.username)
+      .setSubject(loginRequest.email)
       .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
       .signWith(SignatureAlgorithm.HS512, SECRET)
       .compact()
+  }
+
+  def validateLoginRequest(loginPayload: LoginPayload): Boolean ={
+    accountRepo.findAccountByEmail(loginPayload.email) match {
+      case Some(account) => {
+        val result = validatePassword(loginPayload.password, account.password)
+        result
+      }
+      case _ => false
+    }
   }
 
   def hashPassword(password: String): String = {
@@ -34,7 +48,7 @@ class AuthService @Inject()(config: Configuration) {
     password.bcryptBounded(salt)
   }
 
-  def validatePassword(plainPassword: String, hashedPassword: String): Boolean = {
+  private def validatePassword(plainPassword: String, hashedPassword: String): Boolean = {
     plainPassword.isBcryptedBounded(hashedPassword)
   }
 }
