@@ -17,7 +17,8 @@ CREATE TABLE `account` (
                            `id` CHAR(36) CHARACTER SET ascii PRIMARY KEY ,
                            `username` varchar(50) NOT NULL,
                            `email` varchar(255) NOT NULL,
-                           `password` varchar(255) NOT NULL
+                           `password` varchar(255) NOT NULL,
+                           UNIQUE (email)
 );
 
 ALTER TABLE `post` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
