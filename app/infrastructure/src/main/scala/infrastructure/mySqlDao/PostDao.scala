@@ -14,7 +14,8 @@ object PostDao extends SkinnyCRUDMapperWithId[PostId, Post] {
   belongsToWithAlias[Account](AccountDao -> AccountDao.createAlias("account"), (p, a) => p.copy(account = a)).byDefault
 
   override def extract(rs: WrappedResultSet, n: scalikejdbc.ResultName[Post]): Post =
-    Post(id = PostId(rs.get(n.id)),
+    Post(
+      id = PostId(rs.get(n.id)),
       title = rs.get(n.title),
       content = rs.get(n.content),
       authorName = rs.get(n.authorName),

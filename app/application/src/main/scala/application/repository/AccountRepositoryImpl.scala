@@ -12,11 +12,12 @@ import scala.util.Try
  */
 class AccountRepositoryImpl extends AccountRepository{
   override def save(account: Account): Try[AccountId] = {
+//    if (isExistEmail(account.email)) throw new RuntimeException("Email already exist")
     Try{
       AccountDao.createWithAttributes(
         Symbol("id") -> account.id.value,
-        Symbol("email") -> account.email,
         Symbol("username") -> account.username,
+        Symbol("email") -> account.email,
         Symbol("password") -> account.password,
       )
     }
@@ -24,5 +25,9 @@ class AccountRepositoryImpl extends AccountRepository{
 
   override def findAccountByEmail(email: String): Option[Account] = {
     AccountDao.findAll().find(_.email.equals(email))
+  }
+
+  override def isExistEmail(email: String): Boolean = {
+    AccountDao.findAll().exists(_.email == email)
   }
 }

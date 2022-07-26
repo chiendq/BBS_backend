@@ -1,11 +1,12 @@
 package application.repository
 
-import application.exception.EntityNotFoundException
 import domain.account.AccountService
+import domain.common.Paged
 import domain.post.PostRepository
-import domain.post.dto.PostCreation
+import domain.post.dtos.PostCreation
 import domain.post.model.{Post, PostId}
 import infrastructure.mySqlDao.PostDao
+import infrastructure.mySqlDao.exception.EntityNotFoundException
 import org.joda.time.DateTime
 import skinny.Pagination
 
@@ -18,32 +19,36 @@ import scala.util.Try
  */
 class PostRepositoryImpl @Inject()(accountService: AccountService) extends PostRepository {
 
-  override def findAllWithPagination(pageSize: Int, pageNumber: Int): Seq[Post] = {
-    PostDao.paginate(Pagination.page(pageNumber).per(pageSize)).orderBy().apply()
+  override def findAllWithPagination(pageSize: Int, pageNumber: Int): Paged[Post] = {
+    val posts = PostDao.paginate(Pagination.page(pageNumber).per(pageSize)).orderBy().apply()
+    val count = PostDao.count()
+
+    Paged(
+      posts,
+      count,
+      pageNumber,
+      pageSize
+    )
   }
 
-  /**
-   * TODO: implement count the records in database
-   *
-   * @return
-   */
-  override def count(): Long = ???
+  override def pageCount(pageSize: Int): Int = {
+    val records = PostDao.count()
+    ((records + pageSize - 1) / pageSize).toInt
+  }
 
   override def getPostById(id: String): Option[Post] = PostDao.findById(PostId(id))
 
-  /*
-  NOT COMPLETED YET : MISSING THUMBNAIL PATH
-   */
   override def createPost(postCreation: PostCreation): Try[PostId] = {
     if (!accountService.isExistAccountId(postCreation.accountId)) throw EntityNotFoundException("Entity Not Found")
     Try{
-      val uuid = UUID.randomUUID()
+      val uuid = UUID.randomUUID().toString
       val currentDateTime = DateTime.now()
+
       PostDao.createWithAttributes(
-        Symbol("id") -> uuid.toString,
+        Symbol("id") -> uuid,
         Symbol("title") -> postCreation.title,
         Symbol("content") -> postCreation.content,
-        Symbol("authorName") -> postCreation.author,
+        Symbol("authorName") -> postCreation.authorName,
         Symbol("createdAt") -> currentDateTime,
         Symbol("updatedOn") -> currentDateTime,
         Symbol("thumbnail") -> postCreation.thumbnail,

@@ -1,21 +1,15 @@
 package domain.post
 
-import domain.post.dto.PostCreation
+import domain.common.Paged
+import domain.post.dtos.{PaginatedPostListDTO, PostCreation, PostDTO}
 import domain.post.model.{Post, PostId}
 
 import scala.util.Try
 
 trait PostService {
-  def createPost(title: String, author: String, content: String, accountId: String, thumbnail: String): Try[PostId]
+  def createPost(postCreation: PostCreation): Try[PostId]
 
+  def getPostById(id: String): Option[PostDTO]
 
-  def getPostById(id: String): Option[Post]
-
-  def getPagination(pageSize: Int, pageNumber: Int): Try[Seq[Post]]
-
-  def validatePageSize(pageSize: Int): Boolean
-
-  def validatePageNumber(pageNumber: Int): Boolean
-
-  def validatePostCreation(postCreation: PostCreation): Boolean
+  def getPaginatedPostList(pageSize: Int, pageNumber: Int): Try[Paged[PostDTO]]
 }

@@ -1,6 +1,7 @@
 package application.controllers.actions
 
 import application.controllers.payload.UserRequest
+import application.jwt.SecurityConstants._
 import play.api.http.HeaderNames
 import play.api.mvc._
 import application.services.AuthService
@@ -16,7 +17,6 @@ class AuthActions @Inject()(bodyParser: BodyParsers.Default, authService: AuthSe
 
   override protected def executionContext: ExecutionContext = ec
 
-  private val headerTokenRegex = """Bearer (.+?)""".r
 
   override def invokeBlock[A](request: Request[A], block: UserRequest[A] => Future[Result]): Future[Result] = {
     val bearerToken = extractBearerToken(request)
@@ -32,7 +32,7 @@ class AuthActions @Inject()(bodyParser: BodyParsers.Default, authService: AuthSe
 
   private def extractBearerToken[A](request: Request[A]): Option[String] = {
     request.headers.get(HeaderNames.AUTHORIZATION) collect {
-      case headerTokenRegex(token) => token
+      case HEADER_TOKEN_REGEX(token) => token
     }
   }
 

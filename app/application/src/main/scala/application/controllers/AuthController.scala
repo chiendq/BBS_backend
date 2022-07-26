@@ -1,7 +1,6 @@
 package application.controllers
 
 import application.controllers.payload.LoginPayload
-import application.implicitFormat.LoginRequestFormat
 import application.jwt.SecurityConstants
 import application.services.AuthService
 import play.api.http.HttpEntity
@@ -15,7 +14,6 @@ class AuthController @Inject()(authService: AuthService,
                                val controllerComponents: ControllerComponents)
   extends BaseController {
 
-  import LoginRequestFormat._
   import SecurityConstants._
 
   val logger: Logger = Logger(getClass)

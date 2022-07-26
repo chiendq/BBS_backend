@@ -1,9 +1,14 @@
 package application.controllers
 
+import domain.post.PostConstraints._
 import application.controllers.actions.AuthActions
-import application.controllers.payload.RegisterForm
 import domain.post.PostService
+import domain.post.dtos.PostCreation._
+import domain.post.model.Post
+import infrastructure.mySqlDao.exception.RequestTypeNotMatchException
 import play.api.Logger
+import play.api.data.Form
+import play.api.data.Forms._
 import play.api.libs.json.Json
 import play.api.mvc._
 
@@ -19,48 +24,54 @@ class PostController @Inject()(authActions: AuthActions,
                                controllerComponents: ControllerComponents)
   extends AbstractController(controllerComponents) {
 
+  import application.json.PagedFormat._
+
   lazy val logger: Logger = Logger(getClass)
 
-  import application.implicitFormat.PostFormat._
-
-  def getPaginationPost(pageSize: Int, pageNumber: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    val posts = postService.getPagination(pageSize, pageNumber).get
-    Ok(Json.toJson(posts)(seqPostDtoFormat))
+  def getPaginatedPosts(pageSize: Int, pageNumber: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    Try {
+      postService.getPaginatedPostList(pageSize, pageNumber).get
+    } match {
+      case Success(posts) => Ok(Json.toJson(posts))
+      case Failure(exception) => BadRequest
+    }
   }
 
   def getPostById(id: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     postService.getPostById(id) match {
-      case Some(value) => Ok(Json.toJson(value)(postDtoWrites))
+      case Some(value) => Ok(Json.toJson(value))
       case None => NotFound
     }
   }
 
-
-  def createPost(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+  def createPost(): Action[AnyContent] = authActions { implicit request: Request[AnyContent] =>
     Try {
       val multipartFormData = request.body.asMultipartFormData.get
 
       val thumbnailUUID = UUID.randomUUID().toString
 
-      multipartFormData.file("thumbnail")
-        .map( picture =>{
+      multipartFormData.file(THUMBNAIL)
+        .map(picture => {
           val filename = Paths.get(picture.filename).getFileName
           val fileSize = picture.fileSize
-          val contentType = picture.contentType
-          picture.ref.copyTo(new File(s"public/images/thumbnails/$thumbnailUUID"), replace = false)
-        })
+          val contentType = picture.contentType.get
+
+          picture.ref.copyTo(new File(s"public/images/thumbnails/${thumbnailUUID}.png"), replace = false)
+
+        }).getOrElse(throw RequestTypeNotMatchException("Missing thumbnail"))
 
       val dataPart = multipartFormData.dataParts
-      val title = dataPart("title").head
-      val author = dataPart("author").head
-      val content = dataPart("content").head
-      val accountId = dataPart("accountId").head
-      postService.createPost(title, author, content, accountId, thumbnailUUID)
+
+      val postCreation = postCreationForm.bindFromRequest(dataPart).get
+
+      postService.createPost(postCreation)
     } match {
-      case Success(value) => Ok
-      case Failure(exception) => {
-        exception.printStackTrace()
-        BadRequest("Cannot created")
+      case Success(value) => Created("Create new post successfully!")
+      case Failure(exception) => exception match {
+        case requestType: RequestTypeNotMatchException => UnprocessableEntity(requestType.message)
+        case _ =>
+          exception.printStackTrace()
+          BadRequest(exception.getMessage)
       }
     }
   }

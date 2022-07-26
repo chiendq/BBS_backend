@@ -15,13 +15,14 @@ class AccountServiceImpl @Inject()(authService: AuthService,
   extends AccountService{
 
   override def save(email: String, username: String, password: String): Try[AccountId] = {
-    val uuid = UUID.randomUUID()
-    val hashedPassword = authService.hashPassword(password)
-    val account = Account(AccountId(uuid.toString), username, email, hashedPassword)
-    accountRepository.save(account)
-  }
+    Try{
+      val uuid = UUID.randomUUID().toString
+      val hashedPassword = authService.hashPassword(password)
+      val account = Account(AccountId(uuid), username, email, hashedPassword)
 
-  def login(email: String, password: String) = ???
+      accountRepository.save(account).get
+    }
+  }
 
   override def isExistAccountId(value: String): Boolean = AccountDao.findById(AccountId(value)) match {
     case Some(value) => true
