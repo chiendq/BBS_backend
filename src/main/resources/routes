@@ -8,3 +8,5 @@ POST    /posts                              application.controllers.PostControll
 POST    /login                              application.controllers.AuthController.login()
 POST    /register                           application.controllers.AccountController.register()
 #GET     /assets/images/*file
+
+GET     /thumbnails/:thumbnailId                               application.controllers.ImageController.getImageByThumbnailId(thumbnailId: String)

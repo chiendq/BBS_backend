@@ -1,14 +1,11 @@
 package application.controllers
 
-import domain.post.PostConstraints._
 import application.controllers.actions.AuthActions
+import domain.post.PostConstraints._
 import domain.post.PostService
 import domain.post.dtos.PostCreation._
-import domain.post.model.Post
 import infrastructure.mySqlDao.exception.RequestTypeNotMatchException
 import play.api.Logger
-import play.api.data.Form
-import play.api.data.Forms._
 import play.api.libs.json.Json
 import play.api.mvc._
 
@@ -33,7 +30,7 @@ class PostController @Inject()(authActions: AuthActions,
       postService.getPaginatedPostList(pageSize, pageNumber).get
     } match {
       case Success(posts) => Ok(Json.toJson(posts))
-      case Failure(exception) => BadRequest
+      case Failure(_) => BadRequest
     }
   }
 
@@ -49,24 +46,24 @@ class PostController @Inject()(authActions: AuthActions,
       val multipartFormData = request.body.asMultipartFormData.get
 
       val thumbnailUUID = UUID.randomUUID().toString
-
       multipartFormData.file(THUMBNAIL)
         .map(picture => {
           val filename = Paths.get(picture.filename).getFileName
           val fileSize = picture.fileSize
           val contentType = picture.contentType.get
 
-          picture.ref.copyTo(new File(s"public/images/thumbnails/${thumbnailUUID}.png"), replace = false)
+          picture.ref.copyTo(new File(s"public/images/thumbnails/$thumbnailUUID.png"), replace = false)
 
         }).getOrElse(throw RequestTypeNotMatchException("Missing thumbnail"))
-
       val dataPart = multipartFormData.dataParts
 
       val postCreation = postCreationForm.bindFromRequest(dataPart).get
 
+      postCreation.thumbnail = thumbnailUUID
+
       postService.createPost(postCreation)
     } match {
-      case Success(value) => Created("Create new post successfully!")
+      case Success(_) => Created("Create new post successfully!")
       case Failure(exception) => exception match {
         case requestType: RequestTypeNotMatchException => UnprocessableEntity(requestType.message)
         case _ =>

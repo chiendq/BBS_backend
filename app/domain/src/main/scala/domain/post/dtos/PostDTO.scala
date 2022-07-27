@@ -7,7 +7,8 @@ case class PostDTO(id: String,
                    content: String,
                    authorName: String,
                    createdAt: String,
-                   updatedOn: String)
+                   updatedOn: String,
+                   thumbnail: String)
 
 object PostDTO{
   implicit lazy val format = Json.format[PostDTO]

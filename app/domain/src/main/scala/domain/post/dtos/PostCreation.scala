@@ -9,7 +9,7 @@ case class PostCreation(accountId: String,
                         title: String,
                         authorName: String,
                         content: String,
-                        thumbnail: String) {
+                        var thumbnail: String) {
   //  require(title.length <= 150, "Title is too long")
   //
   //  require(authorName.length <= 50, "Author name too long")
@@ -30,6 +30,6 @@ object PostCreation {
       TITLE -> text(maxLength = 150, minLength = 1),
       AUTHOR_NAME -> text(maxLength = 50, minLength = 1),
       CONTENT -> text(minLength = 1),
-      THUMBNAIL -> ignored(THUMBNAIL),
+      THUMBNAIL -> ignored[String]("thumbnail ne"),
     )(PostCreation.apply)(PostCreation.unapply))
 }
