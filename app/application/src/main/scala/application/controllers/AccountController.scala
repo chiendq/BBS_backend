@@ -21,14 +21,11 @@ class AccountController @Inject()(val controllerComponents: ControllerComponents
       case Success(register) => {
         accountService.save(register.email, register.username, register.password) match {
           case Success(value) => Ok("Registered")
-          case Failure(exception) => {
-            exception.printStackTrace()
+          case Failure(exception) =>
             Conflict(exception.getMessage)
-          }
         }
       }
-      case Failure(exception) =>
-        BadRequest(exception.getMessage)
+      case Failure(exception) => BadRequest(exception.getMessage)
     }
   }
 }

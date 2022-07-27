@@ -26,10 +26,10 @@ object PostCreation {
 
   val postCreationForm = Form[PostCreation](
     mapping(
-      ACCOUNT_ID -> text,
-      TITLE -> text,
-      AUTHOR_NAME -> text,
-      CONTENT -> text,
+      ACCOUNT_ID -> text(minLength = 1),
+      TITLE -> text(maxLength = 150, minLength = 1),
+      AUTHOR_NAME -> text(maxLength = 50, minLength = 1),
+      CONTENT -> text(minLength = 1),
       THUMBNAIL -> ignored(THUMBNAIL),
     )(PostCreation.apply)(PostCreation.unapply))
 }
