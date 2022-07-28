@@ -1,6 +1,5 @@
 package application.services
 
-import application.controllers.payload.LoginPayload
 import application.jwt.SecurityConstants._
 import io.jsonwebtoken.{Claims, Jwts, SignatureAlgorithm}
 import play.api.Configuration
@@ -10,7 +9,8 @@ import java.util.Date
 import javax.inject.{Inject, Singleton}
 import scala.util.Try
 import com.github.t3hnar.bcrypt._
-import domain.account.{AccountRepository}
+import domain.account.AccountRepository
+import domain.account.dtos.LoginPayLoad
 @Singleton
 class AuthService @Inject()(config: Configuration,
                             accountRepo : AccountRepository) {
@@ -25,7 +25,7 @@ class AuthService @Inject()(config: Configuration,
     }
   }
 
-  def generateJwtToken(loginPayload: LoginPayload): String = {
+  def generateJwtToken(loginPayload: LoginPayLoad): String = {
     val accountId = accountRepo.findAccountByEmail(loginPayload.email).get.id
     Jwts.builder()
       .setSubject(accountId.value)
@@ -34,7 +34,7 @@ class AuthService @Inject()(config: Configuration,
       .compact()
   }
 
-  def validateLoginRequest(loginPayload: LoginPayload): Boolean ={
+  def validateLoginRequest(loginPayload: LoginPayLoad): Boolean ={
     accountRepo.findAccountByEmail(loginPayload.email) match {
       case Some(account) => {
         val result = validatePassword(loginPayload.password, account.password)

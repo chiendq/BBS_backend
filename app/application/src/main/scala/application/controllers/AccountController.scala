@@ -1,10 +1,9 @@
 package application.controllers
 
-import domain.account.dtos.RegisterForm.registerForm
+import application.forms.RegisterForm.registerForm
 import application.services.AccountServiceImpl
 import play.api.Logger
 import play.api.mvc._
-
 import javax.inject._
 import scala.util.{Failure, Success, Try}
 
