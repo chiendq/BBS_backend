@@ -25,9 +25,10 @@ class AuthService @Inject()(config: Configuration,
     }
   }
 
-  def generateJwtToken(loginRequest: LoginPayload): String = {
+  def generateJwtToken(loginPayload: LoginPayload): String = {
+    val accountId = accountRepo.findAccountByEmail(loginPayload.email).get.id
     Jwts.builder()
-      .setSubject(loginRequest.email)
+      .setSubject(accountId.value)
       .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
       .signWith(SignatureAlgorithm.HS512, SECRET)
       .compact()

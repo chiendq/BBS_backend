@@ -22,13 +22,7 @@ class PostRepositoryImpl @Inject()(accountService: AccountService) extends PostR
   override def findAllWithPagination(pageSize: Int, pageNumber: Int): Paged[Post] = {
     val posts = PostDao.paginate(Pagination.page(pageNumber).per(pageSize)).orderBy().apply()
     val count = PostDao.count()
-
-    Paged(
-      posts,
-      count,
-      pageNumber,
-      pageSize
-    )
+    Paged(posts, count, pageNumber, pageSize)
   }
 
   override def pageCount(pageSize: Int): Int = {

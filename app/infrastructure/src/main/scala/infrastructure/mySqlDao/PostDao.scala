@@ -5,6 +5,9 @@ import domain.post.model.{Post, PostId}
 import scalikejdbc.WrappedResultSet
 import skinny.orm.{Alias, SkinnyCRUDMapperWithId}
 
+import javax.inject.Singleton
+
+@Singleton
 object PostDao extends SkinnyCRUDMapperWithId[PostId, Post] {
 
   override lazy val tableName = "post"
