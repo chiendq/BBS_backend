@@ -1,8 +1,8 @@
 package domain.post
 
 import domain.common.Paged
-import domain.post.dtos.{PaginatedPostListDTO, PostCreation, PostDTO}
-import domain.post.model.{Post, PostId}
+import domain.post.dtos.{PostCreation, PostDTO}
+import domain.post.model.PostId
 
 import scala.util.Try
 

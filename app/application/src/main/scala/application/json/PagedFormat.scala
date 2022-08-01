@@ -1,7 +1,7 @@
 package application.json
 
 import domain.common.Paged
-import play.api.libs.json.{JsValue, Json, Writes}
+import play.api.libs.json.{Json, Writes}
 
 object PagedFormat {
   implicit def pagedFormats[T](implicit writes: Writes[T]): Writes[Paged[T]] = Writes { page =>
