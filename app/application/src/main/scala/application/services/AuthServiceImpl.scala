@@ -1,8 +1,9 @@
 package application.services
 
 import application.jwt.SecurityConstants._
+import domain.auth.AuthService
 import com.auth0.jwt.exceptions.JWTVerificationException
-import io.jsonwebtoken.{Claims, Jwts, SignatureAlgorithm}
+import io.jsonwebtoken.{Jwts, SignatureAlgorithm}
 import play.api.Configuration
 import skinny.logging.Logger
 
@@ -14,20 +15,19 @@ import domain.account.AccountRepository
 import domain.account.dtos.LoginRequestDTO
 import play.api.mvc.Request
 @Singleton
-class AuthService @Inject()(config: Configuration,
-                            accountRepo : AccountRepository) {
+class AuthServiceImpl @Inject()(config: Configuration,
+                                accountRepo : AccountRepository) extends AuthService {
   val logger: Logger = Logger(getClass)
 
-  def validateJwt(token: String): Try[Claims] = {
+  override def validateJwt(token: String): Try[Unit] = {
     Try {
       Jwts.parser()
         .setSigningKey(SECRET)
         .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-        .getBody
     }
   }
 
-  def generateJwtToken(loginRequestDTO: LoginRequestDTO): String = {
+  override def generateJwtToken(loginRequestDTO: LoginRequestDTO): String = {
     val accountId = accountRepo.findAccountByEmail(loginRequestDTO.email).get.id
     Jwts.builder()
       .setSubject(accountId.value)
@@ -36,7 +36,7 @@ class AuthService @Inject()(config: Configuration,
       .compact()
   }
 
-  def validateLoginRequest(loginRequestDTO: LoginRequestDTO): Boolean ={
+  override def validateLoginRequest(loginRequestDTO: LoginRequestDTO): Boolean ={
     accountRepo.findAccountByEmail(loginRequestDTO.email) match {
       case Some(account) => {
         val result = validatePassword(loginRequestDTO.password, account.password)
@@ -46,7 +46,7 @@ class AuthService @Inject()(config: Configuration,
     }
   }
 
-  def hashPassword(password: String): String = {
+  override def hashPassword(password: String): String = {
     val salt = generateSalt
     password.bcryptBounded(salt)
   }
@@ -62,8 +62,12 @@ class AuthService @Inject()(config: Configuration,
 
   def extractSubject[A](request: Request[A]): String = {
     val token = extractBearerToken(request).get
-    val claims = validateJwt(token).get
-    claims.getSubject
+    val claims = Jwts.parser()
+      .setSigningKey(SECRET)
+      .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+      .getBody.getSubject
+    claims
+
   }
 
 }

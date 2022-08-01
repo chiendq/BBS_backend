@@ -1,6 +1,6 @@
 package application.repository
 
-import domain.account.AccountService
+import domain.account.serivces.AccountService
 import domain.common.Paged
 import domain.post.PostRepository
 import domain.post.dtos.PostCreation

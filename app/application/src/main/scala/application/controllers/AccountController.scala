@@ -1,7 +1,7 @@
 package application.controllers
 
 import application.forms.RegisterForm.registerForm
-import application.services.AccountServiceImpl
+import domain.account.serivces.AccountServiceImpl
 import play.api.Logger
 import play.api.mvc._
 import javax.inject._

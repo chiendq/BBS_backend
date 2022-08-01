@@ -1,6 +1,6 @@
 package application.controllers
 
-import domain.post.PostService
+import domain.post.services.PostService
 import play.api.Logger
 import play.api.libs.ws.WSClient
 import play.api.mvc._

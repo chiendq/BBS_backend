@@ -1,10 +1,10 @@
 package application.controllers
 
-import application.services.AuthService
+import application.services.AuthServiceImpl
 import application.forms.LoginForm.loginForm
 import application.json.AccountFormat._
-import domain.account.AccountService
 import domain.account.dtos.LoginResponseDTO
+import domain.account.serivces.AccountService
 
 import play.api.libs.json.Json
 import play.api.mvc._
@@ -13,7 +13,7 @@ import skinny.logging.Logger
 import javax.inject.Inject
 import scala.util.{Failure, Success, Try}
 
-class AuthController @Inject()(authService: AuthService,
+class AuthController @Inject()(authService: AuthServiceImpl,
                                val controllerComponents: ControllerComponents,
                                accountService: AccountService)
   extends BaseController {

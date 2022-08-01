@@ -1,7 +1,8 @@
-package application.services
+package domain.account.serivces
 
-import domain.account.{AccountRepository, AccountService}
+import domain.account.AccountRepository
 import domain.account.model.{Account, AccountId}
+import domain.auth.AuthService
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
@@ -9,7 +10,7 @@ import scala.util.Try
 
 @Singleton
 class AccountServiceImpl @Inject()(authService: AuthService,
-                                    accountRepository: AccountRepository)
+                                   accountRepository: AccountRepository)
   extends AccountService{
 
   override def save(email: String, username: String, password: String): Try[AccountId] = {

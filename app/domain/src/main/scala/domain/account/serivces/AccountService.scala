@@ -1,4 +1,4 @@
-package domain.account
+package domain.account.serivces
 
 import domain.account.model.{Account, AccountId}
 

@@ -1,12 +1,13 @@
 package application.controllers
 
 import application.controllers.actions.AuthActions
+import application.converter.PostConverter
 import application.json.PagedFormat._
 import application.json.PostCreationFormat.postCreationForm
 import application.json.PostDTOFormat._
-import application.services.AuthService
+import application.services.AuthServiceImpl
 import com.auth0.jwt.exceptions.JWTVerificationException
-import domain.post.PostService
+import domain.post.services.PostService
 import infrastructure.mySqlDao.exception.RequestTypeNotMatchException
 import play.api.Logger
 import play.api.libs.json.Json
@@ -20,7 +21,7 @@ import scala.util.{Failure, Success, Try}
 
 @Singleton
 class PostController @Inject()(authActions: AuthActions,
-                               authService: AuthService,
+                               authService: AuthServiceImpl,
                                postService: PostService,
                                controllerComponents: ControllerComponents)
   extends AbstractController(controllerComponents) {
@@ -29,7 +30,7 @@ class PostController @Inject()(authActions: AuthActions,
 
   def getPaginatedPosts(pageSize: Int, pageNumber: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Try {
-      postService.getPaginatedPostList(pageSize, pageNumber).get
+      postService.getPaginatedPostList(pageSize, pageNumber).get.map(PostConverter.toDto)
     } match {
       case Success(posts) => Ok(Json.toJson(posts))
       case Failure(_) => BadRequest
@@ -38,7 +39,10 @@ class PostController @Inject()(authActions: AuthActions,
 
   def getPostById(id: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     postService.getPostById(id) match {
-      case Some(value) => Ok(Json.toJson(value))
+      case Some(value) => {
+        val postDTO = PostConverter.toDto(value)
+        Ok(Json.toJson(postDTO))
+      }
       case None => NotFound
     }
   }

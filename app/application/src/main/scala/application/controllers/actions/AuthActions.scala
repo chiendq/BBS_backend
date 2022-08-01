@@ -2,14 +2,14 @@ package application.controllers.actions
 
 import application.controllers.payload.UserRequest
 import play.api.mvc._
-import application.services.AuthService
+import application.services.AuthServiceImpl
 import play.api.Logger
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
 
-class AuthActions @Inject()(bodyParser: BodyParsers.Default, authService: AuthService)(implicit ec: ExecutionContext)
+class AuthActions @Inject()(bodyParser: BodyParsers.Default, authService: AuthServiceImpl)(implicit ec: ExecutionContext)
   extends ActionBuilder[UserRequest, AnyContent] {
 
   override def parser: BodyParser[AnyContent] = bodyParser
