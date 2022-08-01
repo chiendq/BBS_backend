@@ -16,6 +16,6 @@ object PostCreationFormat {
       TITLE -> text(maxLength = 150, minLength = 1),
       AUTHOR_NAME -> text(maxLength = 50, minLength = 1),
       CONTENT -> text(minLength = 1),
-      THUMBNAIL -> ignored[String]("thumbnail ne"),
+      THUMBNAIL -> ignored[String]("default thumbnail"),
     )(PostCreation.apply)(PostCreation.unapply))
 }

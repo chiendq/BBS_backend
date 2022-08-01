@@ -1,8 +1,7 @@
 package application.json
 
 import domain.account.dtos.LoginResponseDTO
-import domain.account.model.Account
-import play.api.libs.json.{JsObject, JsValue, Json, Writes}
+import play.api.libs.json.{ JsValue, Json, Writes}
 
 object AccountFormat {
   implicit lazy val loginResponseDTOFormat =new  Writes[LoginResponseDTO] {
