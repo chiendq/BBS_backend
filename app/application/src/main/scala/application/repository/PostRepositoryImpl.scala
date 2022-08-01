@@ -41,7 +41,7 @@ class PostRepositoryImpl @Inject()(accountService: AccountService) extends PostR
         Symbol("createdAt") -> currentDateTime,
         Symbol("updatedOn") -> currentDateTime,
         Symbol("thumbnail") -> postCreation.thumbnail,
-        Symbol("accountId") -> postCreation.accountId
+        Symbol("accountId") -> postCreation.accountId.value
       )
     }
   }

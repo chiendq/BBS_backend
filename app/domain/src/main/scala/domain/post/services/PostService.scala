@@ -1,5 +1,6 @@
 package domain.post.services
 
+import domain.account.model.AccountId
 import domain.common.Paged
 import domain.post.dtos.PostCreation
 import domain.post.model.{Post, PostId}
