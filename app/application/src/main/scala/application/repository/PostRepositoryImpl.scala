@@ -20,7 +20,7 @@ import scala.util.Try
 class PostRepositoryImpl @Inject()(accountService: AccountService) extends PostRepository {
 
   override def findAllWithPagination(pageSize: Int, pageNumber: Int): Paged[Post] = {
-    val posts = PostDao.paginate(Pagination.page(pageNumber).per(pageSize)).orderBy().apply()
+    val posts = PostDao.paginate(Pagination.page(pageNumber).per(pageSize)).orderBy(PostDao.defaultAlias.createdAt).apply()
     val count = PostDao.count()
     Paged(posts, count, pageNumber, pageSize)
   }
@@ -33,7 +33,7 @@ class PostRepositoryImpl @Inject()(accountService: AccountService) extends PostR
   override def getPostById(id: String): Option[Post] = PostDao.findById(PostId(id))
 
   override def createPost(postCreation: PostCreation): Try[PostId] = {
-    if (!accountService.isExistAccountId(postCreation.accountId)) throw EntityNotFoundException("Entity Not Found")
+    if (!accountService.isExistAccountId(postCreation.accountId)) throw EntityNotFoundException("AccountId not found")
     Try{
       val uuid = UUID.randomUUID().toString
       val currentDateTime = DateTime.now()
