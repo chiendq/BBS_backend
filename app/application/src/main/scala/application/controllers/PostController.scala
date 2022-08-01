@@ -66,7 +66,12 @@ class PostController @Inject()(authActions: AuthActions,
 
       val dataPart = multipartFormData.dataParts
 
-      val postCreation = postCreationForm.bindFromRequest(dataPart).get
+      val form = postCreationForm.bindFromRequest(dataPart)
+      val errors = form.errors
+
+      if(!errors.isEmpty) throw new RuntimeException(errors.mkString(", "))
+
+      val postCreation = form.get
       val tokenAccountId = authService.extractSubject(request)
 
       if( postCreation.accountId != tokenAccountId) throw new JWTVerificationException("Authorization Error")
