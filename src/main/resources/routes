@@ -6,6 +6,7 @@ GET     /posts/:id                          application.controllers.PostControll
 POST    /posts                              application.controllers.PostController.createPost()
 
 POST    /login                              application.controllers.AuthController.login()
+DELETE  /logout                             application.controllers.AuthController.logout()
 POST    /register                           application.controllers.AccountController.register()
 #GET     /assets/images/*file
 

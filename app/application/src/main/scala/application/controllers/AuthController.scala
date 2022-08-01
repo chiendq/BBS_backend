@@ -33,5 +33,10 @@ class AuthController @Inject()(authService: AuthService,
       case Failure(exception) => Unauthorized(exception.getMessage)
     }
   }
+
+  def logout(): Action[AnyContent] = Action { implicit request: Request[AnyContent] => {
+    Ok.withCookies(Cookie("Bearer ",""))
+    }
+  }
 }
 
