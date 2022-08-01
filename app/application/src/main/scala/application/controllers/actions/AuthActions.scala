@@ -39,12 +39,7 @@ class AuthActions @Inject()(bodyParser: BodyParsers.Default, authService: AuthSe
 
   private def extractBearerToken[A](request: Request[A]): Option[String] = {
     val cookies = request.cookies
-    cookies.get("Bearer") match {
-      case Some(cookie) =>
-        Some(cookie.value)
-      case None =>
-        throw new JWTVerificationException("No token found!")
-    }
+    cookies.get("Bearer").map(_.value).orElse(throw new JWTVerificationException("No token found!"))
   }
 
 }

@@ -1,8 +1,12 @@
 package application.controllers
 
 import application.services.AuthService
-import domain.account.AccountService
 import application.forms.LoginForm.loginForm
+import application.json.AccountFormat._
+import domain.account.AccountService
+import domain.account.dtos.LoginResponseDTO
+
+import play.api.libs.json.Json
 import play.api.mvc._
 import skinny.logging.Logger
 
@@ -25,17 +29,18 @@ class AuthController @Inject()(authService: AuthService,
 
       val token = authService.generateJwtToken(loginPayload)
 
-      val cookie = Cookie.apply("Bearer ",token,maxAge = Some(360000),httpOnly = true)
-      Ok(user.username).withCookies(cookie)
+      val cookie = Cookie.apply("Bearer",token,maxAge = Some(360000),httpOnly = true)
+
+      val loginResponseDTO = LoginResponseDTO(user.id.value, user.username)
+      Ok(Json.toJson(loginResponseDTO)).withCookies(cookie)
     } match {
       case Success(result) => result
-
       case Failure(exception) => Unauthorized(exception.getMessage)
     }
   }
 
   def logout(): Action[AnyContent] = Action { implicit request: Request[AnyContent] => {
-    Ok.withCookies(Cookie("Bearer ",""))
+    Ok.withCookies(Cookie("Bearer",""))
     }
   }
 }
