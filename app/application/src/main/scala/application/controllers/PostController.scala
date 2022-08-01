@@ -1,9 +1,10 @@
 package application.controllers
 
 import application.controllers.actions.AuthActions
-import domain.post.PostConstraints._
+import application.json.PagedFormat._
+import application.json.PostCreationFormat.postCreationForm
+import application.json.PostDTOFormat._
 import domain.post.PostService
-import domain.post.dtos.PostCreation._
 import infrastructure.mySqlDao.exception.RequestTypeNotMatchException
 import play.api.Logger
 import play.api.libs.json.Json
@@ -20,8 +21,6 @@ class PostController @Inject()(authActions: AuthActions,
                                postService: PostService,
                                controllerComponents: ControllerComponents)
   extends AbstractController(controllerComponents) {
-
-  import application.json.PagedFormat._
 
   lazy val logger: Logger = Logger(getClass)
 
@@ -46,7 +45,8 @@ class PostController @Inject()(authActions: AuthActions,
       val multipartFormData = request.body.asMultipartFormData.get
 
       val thumbnailUUID = UUID.randomUUID().toString
-      multipartFormData.file(THUMBNAIL)
+
+      multipartFormData.file("file")
         .map(picture => {
           val filename = Paths.get(picture.filename).getFileName
           val fileSize = picture.fileSize
@@ -55,6 +55,7 @@ class PostController @Inject()(authActions: AuthActions,
           picture.ref.copyTo(new File(s"public/images/thumbnails/$thumbnailUUID.png"), replace = false)
 
         }).getOrElse(throw RequestTypeNotMatchException("Missing thumbnail"))
+
       val dataPart = multipartFormData.dataParts
 
       val postCreation = postCreationForm.bindFromRequest(dataPart).get
@@ -66,9 +67,7 @@ class PostController @Inject()(authActions: AuthActions,
       case Success(_) => Created("Create new post successfully!")
       case Failure(exception) => exception match {
         case requestType: RequestTypeNotMatchException => UnprocessableEntity(requestType.message)
-        case _ =>
-          exception.printStackTrace()
-          BadRequest(exception.getMessage)
+        case _ => BadRequest(exception.getMessage)
       }
     }
   }

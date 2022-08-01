@@ -1,4 +1,4 @@
-`package application.json
+package application.json
 
 import domain.post.PostConstraints.{ACCOUNT_ID, AUTHOR_NAME, CONTENT, THUMBNAIL, TITLE}
 import domain.post.dtos.PostCreation
