@@ -1,6 +1,6 @@
 package application.forms
 
-import domain.account.dtos.LoginPayLoad
+import domain.account.dtos.LoginRequestDTO
 import play.api.data.Form
 import play.api.data.Forms.{email, mapping, text}
 
@@ -9,6 +9,6 @@ object LoginForm {
     mapping(
       "email" -> email,
       "password" -> text(minLength = 8)
-    )(LoginPayLoad.apply)(LoginPayLoad.unapply)
+    )(LoginRequestDTO.apply)(LoginRequestDTO.unapply)
   )
 }

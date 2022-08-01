@@ -10,7 +10,7 @@ import javax.inject.{Inject, Singleton}
 import scala.util.Try
 import com.github.t3hnar.bcrypt._
 import domain.account.AccountRepository
-import domain.account.dtos.LoginPayLoad
+import domain.account.dtos.LoginRequestDTO
 @Singleton
 class AuthService @Inject()(config: Configuration,
                             accountRepo : AccountRepository) {
@@ -25,8 +25,8 @@ class AuthService @Inject()(config: Configuration,
     }
   }
 
-  def generateJwtToken(loginPayload: LoginPayLoad): String = {
-    val accountId = accountRepo.findAccountByEmail(loginPayload.email).get.id
+  def generateJwtToken(loginRequestDTO: LoginRequestDTO): String = {
+    val accountId = accountRepo.findAccountByEmail(loginRequestDTO.email).get.id
     Jwts.builder()
       .setSubject(accountId.value)
       .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
@@ -34,10 +34,10 @@ class AuthService @Inject()(config: Configuration,
       .compact()
   }
 
-  def validateLoginRequest(loginPayload: LoginPayLoad): Boolean ={
-    accountRepo.findAccountByEmail(loginPayload.email) match {
+  def validateLoginRequest(loginRequestDTO: LoginRequestDTO): Boolean ={
+    accountRepo.findAccountByEmail(loginRequestDTO.email) match {
       case Some(account) => {
-        val result = validatePassword(loginPayload.password, account.password)
+        val result = validatePassword(loginRequestDTO.password, account.password)
         result
       }
       case _ => false
