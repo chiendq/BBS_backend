@@ -2,12 +2,11 @@ package application.services
 
 import application.converter.PostConverter
 import domain.common.Paged
-import domain.post.dtos.{PaginatedPostListDTO, PostCreation, PostDTO}
-import domain.post.model.{Post, PostId}
+import domain.post.dtos.{ PostCreation, PostDTO}
+import domain.post.model.{ PostId}
 import domain.post.{PostRepository, PostService}
 
 import javax.inject.{Inject, Singleton}
-import scala.tools.nsc.doc.html.Page
 import scala.util.Try
 
 @Singleton

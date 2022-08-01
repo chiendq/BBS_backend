@@ -2,13 +2,11 @@ package application.services
 
 import domain.account.{AccountRepository, AccountService}
 import domain.account.model.{Account, AccountId}
-import infrastructure.mySqlDao.AccountDao
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
 import scala.util.Try
 
-// VALIDATE HERE
 @Singleton
 class AccountServiceImpl @Inject()(authService: AuthService,
                                     accountRepository: AccountRepository)
@@ -22,11 +20,6 @@ class AccountServiceImpl @Inject()(authService: AuthService,
 
       accountRepository.save(account).get
     }
-  }
-
-  override def isExistAccountId(value: String): Boolean = AccountDao.findById(AccountId(value)) match {
-    case Some(value) => true
-    case None => false
   }
 
   override def findByEmail(email: String): Option[Account] = {

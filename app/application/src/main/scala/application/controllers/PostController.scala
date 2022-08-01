@@ -4,6 +4,8 @@ import application.controllers.actions.AuthActions
 import application.json.PagedFormat._
 import application.json.PostCreationFormat.postCreationForm
 import application.json.PostDTOFormat._
+import application.services.AuthService
+import com.auth0.jwt.exceptions.JWTVerificationException
 import domain.post.PostService
 import infrastructure.mySqlDao.exception.RequestTypeNotMatchException
 import play.api.Logger
@@ -18,6 +20,7 @@ import scala.util.{Failure, Success, Try}
 
 @Singleton
 class PostController @Inject()(authActions: AuthActions,
+                               authService: AuthService,
                                postService: PostService,
                                controllerComponents: ControllerComponents)
   extends AbstractController(controllerComponents) {
@@ -42,6 +45,7 @@ class PostController @Inject()(authActions: AuthActions,
 
   def createPost(): Action[AnyContent] = authActions { implicit request: Request[AnyContent] =>
     Try {
+
       val multipartFormData = request.body.asMultipartFormData.get
 
       val thumbnailUUID = UUID.randomUUID().toString
@@ -59,6 +63,9 @@ class PostController @Inject()(authActions: AuthActions,
       val dataPart = multipartFormData.dataParts
 
       val postCreation = postCreationForm.bindFromRequest(dataPart).get
+      val tokenAccountId = authService.extractSubject(request)
+
+      if( postCreation.accountId != tokenAccountId) throw new JWTVerificationException("Authorization Error")
 
       postCreation.thumbnail = thumbnailUUID
 

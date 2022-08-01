@@ -14,9 +14,6 @@ import java.util.UUID
 import javax.inject.Inject
 import scala.util.Try
 
-/**
- * FIXME : not sure that calling "Service" or "Repository" layer
- */
 class PostRepositoryImpl @Inject()(accountService: AccountService) extends PostRepository {
 
   override def findAllWithPagination(pageSize: Int, pageNumber: Int): Paged[Post] = {
@@ -33,7 +30,6 @@ class PostRepositoryImpl @Inject()(accountService: AccountService) extends PostR
   override def getPostById(id: String): Option[Post] = PostDao.findById(PostId(id))
 
   override def createPost(postCreation: PostCreation): Try[PostId] = {
-    if (!accountService.isExistAccountId(postCreation.accountId)) throw EntityNotFoundException("AccountId not found")
     Try{
       val uuid = UUID.randomUUID().toString
       val currentDateTime = DateTime.now()

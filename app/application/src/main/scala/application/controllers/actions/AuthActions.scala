@@ -1,11 +1,8 @@
 package application.controllers.actions
 
 import application.controllers.payload.UserRequest
-import application.jwt.SecurityConstants._
-import play.api.http.HeaderNames
 import play.api.mvc._
 import application.services.AuthService
-import com.auth0.jwt.exceptions.{JWTVerificationException, TokenExpiredException}
 import play.api.Logger
 
 import javax.inject.Inject
@@ -23,7 +20,7 @@ class AuthActions @Inject()(bodyParser: BodyParsers.Default, authService: AuthSe
 
   override def invokeBlock[A](request: Request[A], block: UserRequest[A] => Future[Result]): Future[Result] = {
     Try {
-      extractBearerToken(request)
+      authService.extractBearerToken(request)
     } match {
       case Failure(exception) => Future.successful(Results.Unauthorized(exception.getMessage))
       case Success(value) => value match {
@@ -37,9 +34,6 @@ class AuthActions @Inject()(bodyParser: BodyParsers.Default, authService: AuthSe
     }
   }
 
-  private def extractBearerToken[A](request: Request[A]): Option[String] = {
-    val cookies = request.cookies
-    cookies.get("Bearer").map(_.value).orElse(throw new JWTVerificationException("No token found!"))
-  }
+
 
 }
