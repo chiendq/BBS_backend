@@ -21,9 +21,6 @@ class AccountRepositoryImpl extends AccountRepository{
         Symbol("password") -> account.password,
       )
     } match {
-      /**
-       * Easter Egg
-       */
       case Failure(exception) => Try{AccountId("")}
       case Success(value) => Try{value}
     }

@@ -6,7 +6,6 @@ import domain.post.PostRepository
 import domain.post.dtos.PostCreation
 import domain.post.model.{Post, PostId}
 import infrastructure.mySqlDao.PostDao
-import infrastructure.mySqlDao.exception.EntityNotFoundException
 import org.joda.time.DateTime
 import skinny.Pagination
 

@@ -12,7 +12,7 @@ object PostCreationFormat {
 
   val postCreationForm: Form[PostCreation] = Form[PostCreation](
     mapping(
-      ACCOUNT_ID -> text(minLength = 1),
+      ACCOUNT_ID -> text(minLength = 36),
       TITLE -> text(maxLength = 150, minLength = 1),
       AUTHOR_NAME -> text(maxLength = 50, minLength = 1),
       CONTENT -> text(minLength = 1),
