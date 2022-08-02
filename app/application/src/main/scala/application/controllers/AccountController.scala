@@ -15,7 +15,12 @@ class AccountController @Inject()(val controllerComponents: ControllerComponents
 
   def register(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Try {
-      registerForm.bindFromRequest().get
+      val form = registerForm.bindFromRequest()
+
+      form.fold(
+        form =>throw new RuntimeException(form.errors.head.message),
+        value => value
+      )
     } match {
       case Success(register) => {
         accountService.save(register.email, register.username, register.password) match {

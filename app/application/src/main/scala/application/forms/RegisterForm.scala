@@ -7,7 +7,7 @@ import play.api.data.Forms.{email, mapping, nonEmptyText, text}
 object RegisterForm {
   val registerForm = Form(
     mapping(
-      "email" -> email,
+      "email" -> text.verifying("Email not correct", _.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")),
       "username" -> text(maxLength = 50, minLength = 1),
       "password" -> text(maxLength = 20, minLength = 8)
     )(RegisterPayload.apply)(RegisterPayload.unapply)
