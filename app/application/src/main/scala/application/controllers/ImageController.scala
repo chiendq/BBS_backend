@@ -18,8 +18,8 @@ class ImageController @Inject()(
     implicit request: Request[AnyContent] =>
 
     val file = new File(s"$THUMBNAIL_PATH$thumbnailId.png")
-    Ok.sendFile(fileName = _ => Some(IMAGE), content = file)(defaultExecutionContext, fileMimeTypes)
-      .as(THUMBNAIL_PNG)
+    Ok.sendFile(fileName = _ => Some("image"), content = file)(defaultExecutionContext, fileMimeTypes)
+      .as(IMAGE_PNG)
   }
 
 }

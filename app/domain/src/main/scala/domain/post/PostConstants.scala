@@ -12,6 +12,9 @@ object PostConstants {
   val THUMBNAIL = "thumbnail"
   val THUMBNAIL_PNG = "png"
   val THUMBNAIL_JPEG = "jpeg"
+  val IMAGE_PNG = "image/png"
+  val IMAGE_JPEG = "image/jpeg"
+  val SUPPORT_IMG = Seq(IMAGE_JPEG,IMAGE_PNG)
   val THUMBNAIL_PATH = "public/images/thumbnails/"
   val IMAGE = "image"
   val DATE = "YYYY/MM/dd"

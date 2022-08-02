@@ -1,13 +1,12 @@
 package application.controllers
 
 import application.controllers.actions.AuthActions
-import application.converter.PostConverter
+import application.converter.PostConverter._
 import application.json.PagedFormat._
 import application.json.PostCreationFormat.postCreationForm
 import application.json.PostDTOFormat._
 import application.services.AuthServiceImpl
-import com.auth0.jwt.exceptions.JWTVerificationException
-import domain.post.PostConstants.THUMBNAIL_PATH
+import domain.post.PostConstants._
 import domain.post.services.PostService
 import infrastructure.mySqlDao.exception.RequestTypeNotMatchException
 import play.api.Logger
@@ -33,7 +32,7 @@ class PostController @Inject()(authActions: AuthActions,
 
   def getPaginatedPosts(pageSize: Int, pageNumber: Int): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Try {
-      postService.getPaginatedPostList(pageSize, pageNumber).get.map(PostConverter.toDto)
+      postService.getPaginatedPostList(pageSize, pageNumber).get.map(toDto)
     } match {
       case Success(posts) => Ok(Json.toJson(posts))
       case Failure(_) => BadRequest
@@ -43,10 +42,9 @@ class PostController @Inject()(authActions: AuthActions,
   def getPostById(id: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     postService.getPostById(id) match {
       case Some(value) => {
-        val postDTO = PostConverter.toDto(value)
-        Ok(Json.toJson(postDTO))
+        Ok(Json.toJson(toDto(value)))
       }
-      case None => NotFound
+      case None => NotFound(s"Post not found with id $id")
     }
   }
 
@@ -73,10 +71,7 @@ class PostController @Inject()(authActions: AuthActions,
       )
     } match {
       case Success(_) => Created("Create new post successfully!")
-      case Failure(exception) => exception match {
-        case requestType: RequestTypeNotMatchException => UnprocessableEntity(requestType.message)
-        case _ => BadRequest(exception.getMessage)
-      }
+      case Failure(exception)=> BadRequest(exception.getMessage)
     }
   }
 
@@ -86,9 +81,10 @@ class PostController @Inject()(authActions: AuthActions,
     val fileSize = file.fileSize
     val contentType = file.contentType.get
 
+    if(! SUPPORT_IMG.contains(contentType)) throw new RuntimeException("Invalid thumbnail content type!")
     file.ref.copyTo(new File(s"$THUMBNAIL_PATH$thumbnailUUID.png"), replace = false)
-
     thumbnailUUID
+
   }
 }
 
