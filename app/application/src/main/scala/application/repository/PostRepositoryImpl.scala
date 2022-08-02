@@ -1,7 +1,9 @@
 package application.repository
 
 import domain.account.serivces.AccountService
+import domain.common.CommonConstants.ID
 import domain.common.Paged
+import domain.post.PostConstants._
 import domain.post.PostRepository
 import domain.post.dtos.PostCreation
 import domain.post.model.{Post, PostId}
@@ -36,14 +38,14 @@ class PostRepositoryImpl @Inject()(accountService: AccountService) extends PostR
       val currentDateTime = DateTime.now()
 
       PostDao.createWithAttributes(
-        Symbol("id")        -> uuid,
-        Symbol("title")     -> postCreation.title,
-        Symbol("content")   -> postCreation.content,
-        Symbol("authorName")-> postCreation.authorName,
-        Symbol("createdAt") -> currentDateTime,
-        Symbol("updatedOn") -> currentDateTime,
-        Symbol("thumbnail") -> postCreation.thumbnail,
-        Symbol("accountId") -> postCreation.accountId.value
+        Symbol(ID)        -> uuid,
+        Symbol(TITLE)     -> postCreation.title,
+        Symbol(CONTENT)   -> postCreation.content,
+        Symbol(AUTHOR_NAME)-> postCreation.authorName,
+        Symbol(CREATED_AT) -> currentDateTime,
+        Symbol(UPDATED_ON) -> currentDateTime,
+        Symbol(THUMBNAIL) -> postCreation.thumbnail,
+        Symbol(ACCOUNT_ID) -> postCreation.accountId.value
       )
     }
   }

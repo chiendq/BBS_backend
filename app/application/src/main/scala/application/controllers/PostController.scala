@@ -7,6 +7,7 @@ import application.json.PostCreationFormat.postCreationForm
 import application.json.PostDTOFormat._
 import application.services.AuthServiceImpl
 import com.auth0.jwt.exceptions.JWTVerificationException
+import domain.post.PostConstants.THUMBNAIL_PATH
 import domain.post.services.PostService
 import infrastructure.mySqlDao.exception.RequestTypeNotMatchException
 import play.api.Logger
@@ -85,7 +86,7 @@ class PostController @Inject()(authActions: AuthActions,
     val fileSize = file.fileSize
     val contentType = file.contentType.get
 
-    file.ref.copyTo(new File(s"public/images/thumbnails/$thumbnailUUID.png"), replace = false)
+    file.ref.copyTo(new File(s"$THUMBNAIL_PATH$thumbnailUUID.png"), replace = false)
 
     thumbnailUUID
   }

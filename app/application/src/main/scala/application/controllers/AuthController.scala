@@ -1,11 +1,11 @@
 package application.controllers
 
-import application.services.AuthServiceImpl
-import application.forms.LoginForm.loginForm
 import application.json.AccountFormat._
-import domain.account.dtos.LoginResponseDTO
+import application.jwt.SecurityConstants.TOKEN_NAME
+import domain.account.dtos.{LoginRequestDTO, LoginResponseDTO}
 import domain.account.serivces.AccountService
 import domain.auth.AuthService
+import infrastructure.exception.AuthenticationException
 import play.api.libs.json.Json
 import play.api.mvc._
 import skinny.logging.Logger
@@ -22,14 +22,17 @@ class AuthController @Inject()(authService: AuthService,
 
   def login(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Try {
-      val loginPayload = loginForm.bindFromRequest().value.get
+      val loginDTO = request.body.asJson.get.as[LoginRequestDTO]
 
-      if(! authService.validateLoginRequest(loginPayload)) throw new RuntimeException("Failed")
-      val user = accountService.findByEmail(loginPayload.email).get
+      val email = loginDTO.email
 
-      val token = authService.generateJwtToken(loginPayload)
+      if(! authService.validateLoginRequest(loginDTO)) throw AuthenticationException("Incorrect username or password")
 
-      val cookie = Cookie.apply("Bearer",token,maxAge = Some(360000),httpOnly = true)
+      val user = accountService.findByEmail(email.value).get
+
+      val token = authService.generateJwtToken(email)
+
+      val cookie = Cookie.apply(TOKEN_NAME,token,maxAge = Some(360000),httpOnly = true)
 
       val loginResponseDTO = LoginResponseDTO(user.id.value, user.username)
       Ok(Json.toJson(loginResponseDTO)).withCookies(cookie)
@@ -40,7 +43,7 @@ class AuthController @Inject()(authService: AuthService,
   }
 
   def logout(): Action[AnyContent] = Action { implicit request: Request[AnyContent] => {
-    Ok.withCookies(Cookie("Bearer",""))
+    Ok.withCookies(Cookie(TOKEN_NAME,""))
     }
   }
 }

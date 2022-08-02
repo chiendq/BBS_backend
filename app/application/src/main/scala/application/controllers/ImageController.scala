@@ -2,6 +2,7 @@ package application.controllers
 
 import play.api.Logger
 import play.api.mvc._
+import domain.post.PostConstants._
 
 import java.io.File
 import javax.inject.{Inject, Singleton}
@@ -16,9 +17,9 @@ class ImageController @Inject()(
   def getImageByThumbnailId(thumbnailId: String): Action[AnyContent] = Action {
     implicit request: Request[AnyContent] =>
 
-    val file = new File(s"public/images/thumbnails/$thumbnailId.png")
-    Ok.sendFile(fileName = _ => Some("image"), content = file)(defaultExecutionContext, fileMimeTypes)
-      .as("image/png")
+    val file = new File(s"$THUMBNAIL_PATH$thumbnailId.png")
+    Ok.sendFile(fileName = _ => Some(IMAGE), content = file)(defaultExecutionContext, fileMimeTypes)
+      .as(THUMBNAIL_PNG)
   }
 
 }

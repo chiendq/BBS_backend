@@ -1,8 +1,7 @@
 package application.controllers.actions
 
-import application.services.AuthServiceImpl
+import application.jwt.SecurityConstants.TOKEN_NAME
 import com.auth0.jwt.exceptions.JWTVerificationException
-import domain.account.model.AccountId
 import domain.auth.JWT
 import play.api.Logger
 import play.api.mvc._
@@ -25,7 +24,7 @@ class AuthActions @Inject()(
   override def invokeBlock[A](request: Request[A], block: UserRequest[A] => Future[Result]): Future[Result] = {
     Try {
       request.cookies
-        .get("Bearer")
+        .get(TOKEN_NAME)
         .map(_.value)
         .getOrElse(throw new JWTVerificationException("No token found!"))
     } match {

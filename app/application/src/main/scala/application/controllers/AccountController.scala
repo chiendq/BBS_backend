@@ -17,19 +17,15 @@ class AccountController @Inject()(val controllerComponents: ControllerComponents
     Try {
       val form = registerForm.bindFromRequest()
 
-      form.fold(
-        form =>throw new RuntimeException(form.errors.head.message),
+      val register = form.fold(
+        form => throw new IllegalArgumentException(form.errors.head.message),
         value => value
       )
-    } match {
-      case Success(register) => {
-        accountService.save(register.email, register.username, register.password) match {
-          case Success(value) => Ok("Registered")
-          case Failure(exception) =>
-            Conflict(exception.getMessage)
-        }
-      }
-      case Failure(exception) => BadRequest(exception.getMessage)
+      accountService.save(register.email, register.username, register.password)
+
+      } match{
+          case Success(_) => Ok("Registered")
+          case Failure(exception) => BadRequest(exception.getMessage)
     }
   }
 }
