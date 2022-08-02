@@ -9,8 +9,8 @@ import javax.inject.{Inject, Singleton}
 import scala.util.Try
 
 @Singleton
-class AccountServiceImpl @Inject()(authService: AuthService,
-                                   passwordHash: PasswordHash,
+class AccountServiceImpl @Inject()(
+                                    passwordHash: PasswordHash,
                                    accountRepository: AccountRepository)
   extends AccountService{
 
@@ -19,7 +19,7 @@ class AccountServiceImpl @Inject()(authService: AuthService,
       val uuid = UUID.randomUUID().toString
       val hashedPassword = passwordHash.make(password)
       val account = Account(AccountId(uuid), username, email, hashedPassword)
-
+      if (accountRepository.isExistEmail(account.email)) throw new RuntimeException("Email already exist")
       accountRepository.save(account).get
     }
   }

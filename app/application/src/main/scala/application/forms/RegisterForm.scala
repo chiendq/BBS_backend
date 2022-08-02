@@ -2,7 +2,7 @@ package application.forms
 
 import domain.account.dtos.RegisterPayload
 import play.api.data.Form
-import play.api.data.Forms.{email, mapping, nonEmptyText, text}
+import play.api.data.Forms.{mapping, text}
 
 object RegisterForm {
   val registerForm = Form(

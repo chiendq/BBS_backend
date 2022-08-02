@@ -3,7 +3,6 @@ package application.services
 import domain.auth.{AuthService, JWT, PasswordHash}
 
 import javax.inject.{Inject, Singleton}
-import com.github.t3hnar.bcrypt._
 import domain.account.AccountRepository
 import domain.account.dtos.LoginRequestDTO
 @Singleton
