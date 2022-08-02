@@ -4,12 +4,8 @@ import domain.account.AccountRepository
 import domain.account.model.{Account, AccountId}
 import infrastructure.mySqlDao.AccountDao
 
-import java.util.UUID
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
-/**
- * TODO: Not yet validate
- */
 class AccountRepositoryImpl extends AccountRepository{
   override def save(account: Account): Try[AccountId] = {
     Try {
@@ -27,6 +23,6 @@ class AccountRepositoryImpl extends AccountRepository{
   }
 
   override def isExistEmail(email: String): Boolean = {
-    AccountDao.findAll().exists(_.email == email)
+    AccountDao.findAll().exists(_.email.equals(email))
   }
 }
