@@ -1,7 +1,7 @@
 package infrastructure.mySqlDao
 
-import domain.account.model.Account
-import domain.post.model.{Post, PostId}
+import domain.account.models.Account
+import domain.post.models.{Post, PostId}
 import scalikejdbc.WrappedResultSet
 import skinny.orm.{Alias, SkinnyCRUDMapperWithId}
 

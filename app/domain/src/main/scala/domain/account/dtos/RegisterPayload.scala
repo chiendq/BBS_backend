@@ -1,5 +1,6 @@
 package domain.account.dtos
 
-case class RegisterPayload(email: String, username: String, password: String) {
-  //  require(email.length > 0, "Email is wrong")
+import domain.common.valueObjects.{Email, RawPassword, Username}
+
+case class RegisterPayload(email: Email, username: Username, password: RawPassword) {
 }

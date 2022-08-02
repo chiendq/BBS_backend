@@ -1,6 +1,6 @@
 package domain.account
 
-import domain.account.model.{Account, AccountId}
+import domain.account.models.{Account, AccountId}
 import domain.common.valueObjects.Email
 
 import scala.util.Try

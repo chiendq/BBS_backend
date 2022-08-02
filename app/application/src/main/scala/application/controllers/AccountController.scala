@@ -1,9 +1,11 @@
 package application.controllers
 
-import application.forms.RegisterForm.registerForm
+import application.json.AccountFormat._
+import domain.account.dtos.RegisterPayload
 import domain.account.serivces.AccountServiceImpl
 import play.api.Logger
 import play.api.mvc._
+
 import javax.inject._
 import scala.util.{Failure, Success, Try}
 
@@ -15,12 +17,9 @@ class AccountController @Inject()(val controllerComponents: ControllerComponents
 
   def register(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Try {
-      val form = registerForm.bindFromRequest()
+      println(request.body.asJson.toString)
+      val register = request.body.asJson.get.as[RegisterPayload]
 
-      val register = form.fold(
-        form => throw new IllegalArgumentException(form.errors.head.message),
-        value => value
-      )
       accountService.save(register.email, register.username, register.password)
 
       } match{

@@ -1,7 +1,7 @@
 package application.converter
 
 import domain.post.dtos.PostDTO
-import domain.post.model.Post
+import domain.post.models.Post
 import application.converter.DateTimeConverter._
 object PostConverter {
 

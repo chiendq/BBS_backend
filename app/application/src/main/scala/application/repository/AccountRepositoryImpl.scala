@@ -2,7 +2,7 @@ package application.repository
 
 import domain.account.AccountConstants.{EMAIL, PASSWORD, USERNAME}
 import domain.account.AccountRepository
-import domain.account.model.{Account, AccountId}
+import domain.account.models.{Account, AccountId}
 import domain.common.CommonConstants.ID
 import domain.common.valueObjects.Email
 import infrastructure.mySqlDao.AccountDao
@@ -14,9 +14,9 @@ class AccountRepositoryImpl extends AccountRepository{
     Try {
       AccountDao.createWithAttributes(
         Symbol(ID)        -> account.id.value,
-        Symbol(USERNAME)  -> account.username,
-        Symbol(EMAIL)     -> account.email,
-        Symbol(PASSWORD)  -> account.password,
+        Symbol(USERNAME)  -> account.username.value,
+        Symbol(EMAIL)     -> account.email.value,
+        Symbol(PASSWORD)  -> account.password.value,
       )
     }
   }

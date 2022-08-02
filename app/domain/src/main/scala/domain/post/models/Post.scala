@@ -1,6 +1,6 @@
-package domain.post.model
+package domain.post.models
 
-import domain.account.model.Account
+import domain.account.models.Account
 import org.joda.time.DateTime
 
 case class Post(id: PostId,

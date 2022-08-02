@@ -1,6 +1,6 @@
 package domain.auth
 
-import domain.account.model.AccountId
+import domain.account.models.AccountId
 
 import scala.util.Try
 

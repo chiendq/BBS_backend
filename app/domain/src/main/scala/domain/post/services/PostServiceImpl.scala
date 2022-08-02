@@ -1,10 +1,10 @@
 package domain.post.services
 
-import domain.account.model.AccountId
+import domain.account.models.AccountId
 import domain.common.Paged
 import domain.post.PostRepository
 import domain.post.dtos.PostCreation
-import domain.post.model.{Post, PostId}
+import domain.post.models.{Post, PostId}
 
 import javax.inject.{Inject, Singleton}
 import scala.util.Try

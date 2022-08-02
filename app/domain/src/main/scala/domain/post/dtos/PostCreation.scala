@@ -1,6 +1,6 @@
 package domain.post.dtos
 
-import domain.account.model.AccountId
+import domain.account.models.AccountId
 
 case class PostCreation(
                          accountId: AccountId,

@@ -1,7 +1,7 @@
 package application.json
 
-import domain.account.dtos.{LoginRequestDTO, LoginResponseDTO}
-import domain.common.valueObjects.{Email, RawPassword}
+import domain.account.dtos.{LoginRequestDTO, LoginResponseDTO, RegisterPayload}
+import domain.common.valueObjects.{Email, RawPassword, Username}
 import play.api.libs.json.{JsResult, JsValue, Json, Reads, Writes}
 
 object AccountFormat {
@@ -21,6 +21,16 @@ object AccountFormat {
         password <- (json \ "password").validate[String]
       } yield LoginRequestDTO(Email(email), RawPassword(password))
   }
+
+  implicit lazy val registerDTOWrites = new Reads[RegisterPayload] {
+    override def reads(json: JsValue): JsResult[RegisterPayload] =
+      for {
+        email <- (json \ "email").validate[String]
+        username <- (json \ "username").validate[String]
+        password <- (json \ "password").validate[String]
+      } yield RegisterPayload(Email(email),Username(username), RawPassword(password))
+  }
+
 
 
 }

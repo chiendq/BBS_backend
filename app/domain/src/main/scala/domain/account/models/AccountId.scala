@@ -1,4 +1,4 @@
-package domain.account.model
+package domain.account.models
 
 import domain.common.Identifier
 

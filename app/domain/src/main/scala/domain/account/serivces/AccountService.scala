@@ -1,11 +1,12 @@
 package domain.account.serivces
 
-import domain.account.model.{Account, AccountId}
+import domain.account.models.{Account, AccountId}
+import domain.common.valueObjects.{Email, RawPassword, Username}
 
 import scala.util.Try
 
 trait AccountService {
   def findByEmail(email: String): Option[Account]
 
-  def save(email: String, username: String, password: String): Try[AccountId]
+  def save(email: Email, username: Username, password: RawPassword): Try[AccountId]
 }

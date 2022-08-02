@@ -1,4 +1,4 @@
-package domain.post.model
+package domain.post.models
 
 import domain.common.Identifier
 

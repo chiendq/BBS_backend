@@ -1,6 +1,6 @@
 package application.json
 
-import domain.account.model.AccountId
+import domain.account.models.AccountId
 import domain.post.PostConstants.{ACCOUNT_ID, AUTHOR_NAME, CONTENT, THUMBNAIL, TITLE}
 import domain.post.dtos.PostCreation
 import play.api.data.Form

@@ -2,7 +2,7 @@ package domain.post
 
 import domain.common.Paged
 import domain.post.dtos.PostCreation
-import domain.post.model.{Post, PostId}
+import domain.post.models.{Post, PostId}
 
 import scala.util.Try
 
