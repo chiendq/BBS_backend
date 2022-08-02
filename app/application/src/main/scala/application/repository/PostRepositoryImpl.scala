@@ -16,7 +16,9 @@ import scala.util.Try
 class PostRepositoryImpl @Inject()(accountService: AccountService) extends PostRepository {
 
   override def findAllWithPagination(pageSize: Int, pageNumber: Int): Paged[Post] = {
-    val posts = PostDao.paginate(Pagination.page(pageNumber).per(pageSize)).orderBy(PostDao.defaultAlias.createdAt).apply()
+    val posts = PostDao
+                  .paginate(Pagination.page(pageNumber).per(pageSize))
+                  .orderBy(PostDao.defaultAlias.createdAt).apply()
     val count = PostDao.count()
     Paged(posts, count, pageNumber, pageSize)
   }
@@ -34,10 +36,10 @@ class PostRepositoryImpl @Inject()(accountService: AccountService) extends PostR
       val currentDateTime = DateTime.now()
 
       PostDao.createWithAttributes(
-        Symbol("id") -> uuid,
-        Symbol("title") -> postCreation.title,
-        Symbol("content") -> postCreation.content,
-        Symbol("authorName") -> postCreation.authorName,
+        Symbol("id")        -> uuid,
+        Symbol("title")     -> postCreation.title,
+        Symbol("content")   -> postCreation.content,
+        Symbol("authorName")-> postCreation.authorName,
         Symbol("createdAt") -> currentDateTime,
         Symbol("updatedOn") -> currentDateTime,
         Symbol("thumbnail") -> postCreation.thumbnail,

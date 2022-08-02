@@ -12,17 +12,13 @@ import scala.util.{Failure, Success, Try}
  */
 class AccountRepositoryImpl extends AccountRepository{
   override def save(account: Account): Try[AccountId] = {
-    if (isExistEmail(account.email)) throw new RuntimeException("Email already exist")
     Try {
       AccountDao.createWithAttributes(
-        Symbol("id") -> account.id.value,
-        Symbol("username") -> account.username,
-        Symbol("email") -> account.email,
-        Symbol("password") -> account.password,
+        Symbol("id")        -> account.id.value,
+        Symbol("username")  -> account.username,
+        Symbol("email")     -> account.email,
+        Symbol("password")  -> account.password,
       )
-    } match {
-      case Failure(exception) => Try{AccountId("")}
-      case Success(value) => Try{value}
     }
   }
 
