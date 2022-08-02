@@ -3,6 +3,7 @@ package domain.account.serivces
 import domain.account.AccountRepository
 import domain.account.model.{Account, AccountId}
 import domain.auth.{AuthService, PasswordHash}
+import domain.common.valueObjects.{Email, Password, RawPassword, Username}
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
@@ -18,7 +19,10 @@ class AccountServiceImpl @Inject()(
     Try{
       val uuid = UUID.randomUUID().toString
       val hashedPassword = passwordHash.make(password)
-      val account = Account(AccountId(uuid), username, email, hashedPassword)
+      val account = Account(AccountId(uuid),
+                            Username(username),
+                            Email(email),
+                            Password(hashedPassword))
       if (accountRepository.isExistEmail(account.email)) throw new RuntimeException("Email already exist")
       accountRepository.save(account).get
     }

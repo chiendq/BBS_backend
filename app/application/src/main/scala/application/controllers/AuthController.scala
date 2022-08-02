@@ -34,7 +34,7 @@ class AuthController @Inject()(authService: AuthService,
 
       val cookie = Cookie.apply(TOKEN_NAME,token,maxAge = Some(360000),httpOnly = true)
 
-      val loginResponseDTO = LoginResponseDTO(user.id.value, user.username)
+      val loginResponseDTO = LoginResponseDTO(user.id, user.username)
       Ok(Json.toJson(loginResponseDTO)).withCookies(cookie)
     } match {
       case Success(result) => result

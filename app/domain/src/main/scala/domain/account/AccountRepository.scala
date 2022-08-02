@@ -1,11 +1,12 @@
 package domain.account
 
 import domain.account.model.{Account, AccountId}
+import domain.common.valueObjects.Email
 
 import scala.util.Try
 
 trait AccountRepository {
-  def isExistEmail(email: String): Boolean
+  def isExistEmail(email: Email): Boolean
 
   def save(account: Account): Try[AccountId]
 

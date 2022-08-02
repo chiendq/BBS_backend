@@ -1,5 +1,5 @@
 package domain.account.dtos
 
-import domain.common.valueObjects.{Email, Password}
+import domain.common.valueObjects.{Email, RawPassword}
 
-case class LoginRequestDTO(email: Email, password: Password)
+case class LoginRequestDTO(email: Email, password: RawPassword)

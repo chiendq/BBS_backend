@@ -1,3 +1,6 @@
 package domain.account.dtos
 
-case class LoginResponseDTO(accountId: String, username: String)
+import domain.account.model.AccountId
+import domain.common.valueObjects.Username
+
+case class LoginResponseDTO(accountId: AccountId, username: Username)

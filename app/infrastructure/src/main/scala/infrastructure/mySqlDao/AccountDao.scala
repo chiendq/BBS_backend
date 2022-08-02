@@ -1,6 +1,7 @@
 package infrastructure.mySqlDao
 
 import domain.account.model.{Account, AccountId}
+import domain.common.valueObjects.{Email, Password, RawPassword, Username}
 import scalikejdbc.WrappedResultSet
 import skinny.orm.{Alias, SkinnyCRUDMapperWithId}
 
@@ -12,9 +13,9 @@ object AccountDao extends SkinnyCRUDMapperWithId[AccountId, Account] {
   override def extract(rs: WrappedResultSet, n: scalikejdbc.ResultName[Account]): Account =
     Account(
       id = AccountId(rs.get(n.id)),
-      username = rs.get(n.username),
-      email = rs.get(n.email),
-      password = rs.get(n.password))
+      username = Username(rs.get(n.username)),
+      email = Email(rs.get(n.email)),
+      password = Password(rs.get(n.password)))
 
   override def idToRawValue(id: AccountId): Any = id.value
 

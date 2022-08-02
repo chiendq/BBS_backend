@@ -19,7 +19,7 @@ class AuthServiceImpl @Inject()(
 
   override def validateLoginRequest(loginRequestDTO: LoginRequestDTO): Boolean ={
     accountRepo.findAccountByEmail(loginRequestDTO.email.value) match {
-      case Some(account) => passwordHash.verify(loginRequestDTO.password.value, account.password)
+      case Some(account) => passwordHash.verify(loginRequestDTO.password, account.password)
       case _ => false
     }
   }
