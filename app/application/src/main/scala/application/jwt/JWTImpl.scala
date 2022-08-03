@@ -3,7 +3,7 @@ package application.jwt
 import application.jwt.SecurityConstants.{EXPIRATION_TIME, SECRET, TOKEN_PREFIX}
 import domain.account.models.AccountId
 import domain.auth.JWT
-import domain.exception.AuthenticationFailedException
+import domain.exceptions.account.AuthenticationFailedException
 import io.jsonwebtoken.{Jwts, SignatureAlgorithm}
 
 import java.util.Date

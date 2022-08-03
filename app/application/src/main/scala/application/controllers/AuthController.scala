@@ -5,13 +5,12 @@ import application.jwt.SecurityConstants._
 import domain.account.dtos.{LoginRequestDTO, LoginResponseDTO}
 import domain.account.serivces.AccountService
 import domain.auth.AuthService
-import domain.exception.AuthenticationFailedException
+import domain.exceptions.account.AuthenticationFailedException
 import play.api.libs.json.Json
 import play.api.mvc._
 import skinny.logging.Logger
 
 import javax.inject.Inject
-import scala.util.{Failure, Success, Try}
 
 class AuthController @Inject()(authService: AuthService,
                                val controllerComponents: ControllerComponents,

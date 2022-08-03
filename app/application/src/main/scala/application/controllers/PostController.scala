@@ -6,12 +6,12 @@ import application.json.PagedFormat._
 import application.json.PostCreationFormat.postCreationForm
 import application.json.PostDTOFormat._
 import application.services.AuthServiceImpl
-import domain.exception.RequestTypeNotMatchException
+import domain.exceptions.post.{InvalidImageTypeException, PostException, RequestTypeMissMatchException}
 import domain.post.PostConstants._
 import domain.post.services.PostService
 import play.api.Logger
 import play.api.libs.Files.TemporaryFile
-import play.api.libs.json.Json
+import play.api.libs.json.{JsResultException, Json}
 import play.api.mvc.MultipartFormData.FilePart
 import play.api.mvc._
 
@@ -49,13 +49,13 @@ class PostController @Inject()(authActions: AuthActions,
   }
 
   def createPost(): Action[AnyContent] = authActions { implicit request =>
-    Try {
+    try {
       val multipartFormData = request.body.asMultipartFormData.get
 
       val thumbnailUUID = multipartFormData
         .file("file")
         .map(uploadThumbnail)
-        .getOrElse(throw RequestTypeNotMatchException("Missing thumbnail"))
+        .getOrElse(throw RequestTypeMissMatchException("Missing thumbnail"))
 
       val dataPart = multipartFormData.dataParts
 
@@ -68,11 +68,13 @@ class PostController @Inject()(authActions: AuthActions,
         form => throw new RuntimeException(form.errors.mkString(", ")),
         postCreation => postService.createPost(postCreation)
       )
-    } match {
-      case Success(_) => Created("Create post successfully!")
-      case Failure(exception)=> BadRequest(exception.getMessage)
+      Created("Create post successfully!")
+    }catch {
+      case postExcept: PostException => BadRequest(postExcept.getMessage)
+      case _: Throwable => BadRequest
     }
   }
+
 
   private def uploadThumbnail(file: FilePart[TemporaryFile]): String = {
     val thumbnailUUID = UUID.randomUUID().toString
@@ -80,10 +82,9 @@ class PostController @Inject()(authActions: AuthActions,
     val fileSize = file.fileSize
     val contentType = file.contentType.get
 
-    if(! SUPPORT_IMG.contains(contentType)) throw new RuntimeException("Invalid thumbnail content type!")
+    if(! SUPPORT_IMG.contains(contentType)) throw InvalidImageTypeException("Invalid thumbnail content type!")
     file.ref.copyTo(new File(s"$THUMBNAIL_PATH$thumbnailUUID.png"), replace = false)
     thumbnailUUID
-
   }
 }
 

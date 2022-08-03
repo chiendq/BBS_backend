@@ -1,6 +1,6 @@
 package domain.common.valueObjects
 
-import domain.exception.AuthenticationFailedException
+import domain.exceptions.account.AuthenticationFailedException
 
 
 case class RawPassword(value: String){

@@ -23,12 +23,13 @@ object AccountFormat {
   }
 
   implicit lazy val registerDTOWrites = new Reads[RegisterPayload] {
-    override def reads(json: JsValue): JsResult[RegisterPayload] =
+    override def reads(json: JsValue): JsResult[RegisterPayload] = {
       for {
         email <- (json \ "email").validate[String]
         username <- (json \ "username").validate[String]
         password <- (json \ "password").validate[String]
       } yield RegisterPayload(Email(email),Username(username), RawPassword(password))
+    }
   }
 
 
