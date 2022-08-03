@@ -3,7 +3,7 @@ package domain.account.serivces
 import domain.account.AccountRepository
 import domain.account.models.{Account, AccountId}
 import domain.auth.PasswordHash
-import domain.common.valueObjects.{Email, Password, RawPassword, Username}
+import domain.common.valueObjects.{Email, HashedPassword, RawPassword, Username}
 
 import java.util.UUID
 import javax.inject.{Inject, Singleton}
@@ -22,7 +22,7 @@ class AccountServiceImpl @Inject()(
     val account = Account(AccountId(uuid),
       username,
       email,
-      Password(hashedPassword))
+      HashedPassword(hashedPassword))
     accountRepository.save(account)
   }
 

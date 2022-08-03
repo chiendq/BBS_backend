@@ -3,10 +3,11 @@ package application.jwt
 import application.jwt.SecurityConstants.{EXPIRATION_TIME, SECRET, TOKEN_PREFIX}
 import domain.account.models.AccountId
 import domain.auth.JWT
+import domain.exception.AuthenticationFailedException
 import io.jsonwebtoken.{Jwts, SignatureAlgorithm}
 
 import java.util.Date
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 
 object JWTImpl extends JWT {
   override def generate(accountId: AccountId): String = {
@@ -18,12 +19,15 @@ object JWTImpl extends JWT {
   }
 
   override def validate(token: String): Try[AccountId] = Try {
-    val subject = Jwts.parser()
-      .setSigningKey(SECRET)
-      .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-      .getBody
-      .getSubject
-
-    AccountId(subject)
+    Try {
+      Jwts.parser()
+        .setSigningKey(SECRET)
+        .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+        .getBody
+        .getSubject
+    } match {
+      case Failure(exception) => throw AuthenticationFailedException("Authentication failed!")
+      case Success(value) => AccountId(value)
+    }
   }
 }

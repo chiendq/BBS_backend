@@ -6,9 +6,9 @@ import application.json.PagedFormat._
 import application.json.PostCreationFormat.postCreationForm
 import application.json.PostDTOFormat._
 import application.services.AuthServiceImpl
+import domain.exception.RequestTypeNotMatchException
 import domain.post.PostConstants._
 import domain.post.services.PostService
-import infrastructure.mySqlDao.exception.RequestTypeNotMatchException
 import play.api.Logger
 import play.api.libs.Files.TemporaryFile
 import play.api.libs.json.Json
@@ -50,7 +50,6 @@ class PostController @Inject()(authActions: AuthActions,
 
   def createPost(): Action[AnyContent] = authActions { implicit request =>
     Try {
-
       val multipartFormData = request.body.asMultipartFormData.get
 
       val thumbnailUUID = multipartFormData
@@ -70,7 +69,7 @@ class PostController @Inject()(authActions: AuthActions,
         postCreation => postService.createPost(postCreation)
       )
     } match {
-      case Success(_) => Created("Create new post successfully!")
+      case Success(_) => Created("Create post successfully!")
       case Failure(exception)=> BadRequest(exception.getMessage)
     }
   }

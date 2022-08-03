@@ -17,7 +17,6 @@ class AccountController @Inject()(val controllerComponents: ControllerComponents
 
   def register(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Try {
-      println(request.body.asJson.toString)
       val register = request.body.asJson.get.as[RegisterPayload]
       accountService.save(register.email, register.username, register.password)
 

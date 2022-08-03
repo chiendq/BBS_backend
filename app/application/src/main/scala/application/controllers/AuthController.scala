@@ -1,11 +1,11 @@
 package application.controllers
 
 import application.json.AccountFormat._
-import application.jwt.SecurityConstants.TOKEN_NAME
+import application.jwt.SecurityConstants._
 import domain.account.dtos.{LoginRequestDTO, LoginResponseDTO}
 import domain.account.serivces.AccountService
 import domain.auth.AuthService
-import infrastructure.exception.AuthenticationException
+import domain.exception.AuthenticationFailedException
 import play.api.libs.json.Json
 import play.api.mvc._
 import skinny.logging.Logger
@@ -21,24 +21,25 @@ class AuthController @Inject()(authService: AuthService,
   val logger: Logger = Logger(getClass)
 
   def login(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Try {
+    try {
+
       val loginDTO = request.body.asJson.get.as[LoginRequestDTO]
 
       val email = loginDTO.email
 
-      if(! authService.validateLoginRequest(loginDTO)) throw AuthenticationException("Incorrect username or password")
+      if(! authService.validateLoginRequest(loginDTO)) throw AuthenticationFailedException("Incorrect username or password")
 
       val user = accountService.findByEmail(email.value).get
 
       val token = authService.generateJwtToken(email)
 
-      val cookie = Cookie.apply(TOKEN_NAME,token,maxAge = Some(360000),httpOnly = true)
+      val cookie = Cookie.apply(TOKEN_NAME,token,maxAge = Some(EXPIRATION_TIME),httpOnly = true)
 
       val loginResponseDTO = LoginResponseDTO(user.id, user.username)
       Ok(Json.toJson(loginResponseDTO)).withCookies(cookie)
-    } match {
-      case Success(result) => result
-      case Failure(exception) => Unauthorized(exception.getMessage)
+    } catch {
+      case authFailed : AuthenticationFailedException => Unauthorized(authFailed.message)
+      case _ => BadRequest
     }
   }
 
