@@ -2,7 +2,7 @@ package domain.account.serivces
 
 import domain.account.AccountRepository
 import domain.account.models.{Account, AccountId}
-import domain.auth.{AuthService, PasswordHash}
+import domain.auth.PasswordHash
 import domain.common.valueObjects.{Email, Password, RawPassword, Username}
 
 import java.util.UUID
@@ -12,20 +12,18 @@ import scala.util.Try
 @Singleton
 class AccountServiceImpl @Inject()(
                                     passwordHash: PasswordHash,
-                                   accountRepository: AccountRepository)
-  extends AccountService{
+                                    accountRepository: AccountRepository)
+  extends AccountService {
 
   override def save(email: Email, username: Username, password: RawPassword): Try[AccountId] = {
-    Try{
-      val uuid = UUID.randomUUID().toString
-      val hashedPassword = passwordHash.make(password.value)
-      val account = Account(AccountId(uuid),
-                            username,
-                            email,
-                            Password(hashedPassword))
-      if (accountRepository.isExistEmail(account.email)) throw new RuntimeException("Email already exist")
-      accountRepository.save(account).get
-    }
+    if (accountRepository.isDuplicateEmail(email)) throw new RuntimeException("Email already exist")
+    val uuid = UUID.randomUUID().toString
+    val hashedPassword = passwordHash.make(password.value)
+    val account = Account(AccountId(uuid),
+      username,
+      email,
+      Password(hashedPassword))
+    accountRepository.save(account)
   }
 
   override def findByEmail(email: String): Option[Account] = {

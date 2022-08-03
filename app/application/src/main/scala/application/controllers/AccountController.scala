@@ -19,7 +19,6 @@ class AccountController @Inject()(val controllerComponents: ControllerComponents
     Try {
       println(request.body.asJson.toString)
       val register = request.body.asJson.get.as[RegisterPayload]
-
       accountService.save(register.email, register.username, register.password)
 
       } match{

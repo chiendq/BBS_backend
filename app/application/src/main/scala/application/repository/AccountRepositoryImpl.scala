@@ -25,7 +25,10 @@ class AccountRepositoryImpl extends AccountRepository{
     AccountDao.findAll().find(_.email.value == email)
   }
 
-  override def isExistEmail(email: Email): Boolean = {
-    AccountDao.findAll().exists(_.email.value == email)
+  override def isDuplicateEmail(email: Email): Boolean = {
+    findAccountByEmail(email.value) match {
+      case Some(value) => true
+      case None => false
+    }
   }
 }

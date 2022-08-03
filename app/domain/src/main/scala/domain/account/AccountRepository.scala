@@ -6,7 +6,7 @@ import domain.common.valueObjects.Email
 import scala.util.Try
 
 trait AccountRepository {
-  def isExistEmail(email: Email): Boolean
+  def isDuplicateEmail(email: Email): Boolean
 
   def save(account: Account): Try[AccountId]
 
