@@ -28,7 +28,7 @@ class AuthController @Inject()(authService: AuthService,
 
       if(! authService.validateLoginRequest(loginDTO)) throw AuthenticationFailedException("Incorrect username or password")
 
-      val user = accountService.findByEmail(email.value).get
+      val user = accountService.findByEmail(email).get
 
       val token = authService.generateJwtToken(email)
 
@@ -38,7 +38,7 @@ class AuthController @Inject()(authService: AuthService,
       Ok(Json.toJson(loginResponseDTO)).withCookies(cookie)
     } catch {
       case authFailed : AuthenticationFailedException => Unauthorized(authFailed.message)
-      case _ => BadRequest
+      case _: Throwable => BadRequest
     }
   }
 

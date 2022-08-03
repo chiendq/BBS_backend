@@ -10,7 +10,7 @@ trait AccountRepository {
 
   def save(account: Account): Try[AccountId]
 
-  def findAccountByEmail(email: String): Option[Account]
+  def findAccountByEmail(email: Email): Option[Account]
 }
 
 

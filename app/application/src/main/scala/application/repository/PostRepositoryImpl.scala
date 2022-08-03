@@ -1,6 +1,5 @@
 package application.repository
 
-import domain.account.serivces.AccountService
 import domain.common.CommonConstants.ID
 import domain.common.Paged
 import domain.post.PostConstants._
@@ -8,14 +7,14 @@ import domain.post.PostRepository
 import domain.post.dtos.PostCreation
 import domain.post.models.{Post, PostId}
 import infrastructure.mySqlDao.PostDao
+
 import org.joda.time.DateTime
 import skinny.Pagination
 
 import java.util.UUID
-import javax.inject.Inject
 import scala.util.Try
 
-class PostRepositoryImpl @Inject()(accountService: AccountService) extends PostRepository {
+class PostRepositoryImpl () extends PostRepository {
 
   override def findAllWithPagination(pageSize: Int, pageNumber: Int): Paged[Post] = {
     val posts = PostDao
@@ -38,14 +37,14 @@ class PostRepositoryImpl @Inject()(accountService: AccountService) extends PostR
       val currentDateTime = DateTime.now()
 
       PostDao.createWithAttributes(
-        Symbol(ID)        -> uuid,
-        Symbol(TITLE)     -> postCreation.title,
-        Symbol(CONTENT)   -> postCreation.content,
-        Symbol(AUTHOR_NAME)-> postCreation.authorName,
-        Symbol(CREATED_AT) -> currentDateTime,
-        Symbol(UPDATED_ON) -> currentDateTime,
-        Symbol(THUMBNAIL) -> postCreation.thumbnail,
-        Symbol(ACCOUNT_ID) -> postCreation.accountId.value
+        Symbol(ID)          -> uuid,
+        Symbol(TITLE)       -> postCreation.title,
+        Symbol(CONTENT)     -> postCreation.content,
+        Symbol(AUTHOR_NAME) -> postCreation.authorName,
+        Symbol(CREATED_AT)  -> currentDateTime,
+        Symbol(UPDATED_ON)  -> currentDateTime,
+        Symbol(THUMBNAIL)   -> postCreation.thumbnail,
+        Symbol(ACCOUNT_ID)  -> postCreation.accountId.value
       )
     }
   }

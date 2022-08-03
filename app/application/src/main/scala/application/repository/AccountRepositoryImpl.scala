@@ -21,14 +21,11 @@ class AccountRepositoryImpl extends AccountRepository{
     }
   }
 
-  override def findAccountByEmail(email: String): Option[Account] = {
-    AccountDao.findAll().find(_.email.value == email)
+  override def findAccountByEmail(email: Email): Option[Account] = {
+    AccountDao.findAll().find(_.email == email)
   }
 
   override def isDuplicateEmail(email: Email): Boolean = {
-    findAccountByEmail(email.value) match {
-      case Some(value) => true
-      case None => false
-    }
+    findAccountByEmail(email).fold(false)(_=>true)
   }
 }

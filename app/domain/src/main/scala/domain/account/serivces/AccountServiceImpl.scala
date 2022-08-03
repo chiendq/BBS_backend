@@ -27,7 +27,7 @@ class AccountServiceImpl @Inject()(
     accountRepository.save(account)
   }
 
-  override def findByEmail(email: String): Option[Account] = {
+  override def findByEmail(email: Email): Option[Account] = {
     accountRepository.findAccountByEmail(email)
   }
 }

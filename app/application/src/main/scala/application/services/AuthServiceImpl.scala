@@ -15,12 +15,12 @@ class AuthServiceImpl @Inject()(
                                  passwordHash: PasswordHash
                                ) extends AuthService {
   override def generateJwtToken(email: Email): String = {
-    val accountId = accountRepo.findAccountByEmail(email.value).get.id
+    val accountId = accountRepo.findAccountByEmail(email).get.id
     jwt.generate(accountId)
   }
 
   override def validateLoginRequest(loginRequestDTO: LoginRequestDTO): Boolean ={
-    accountRepo.findAccountByEmail(loginRequestDTO.email.value) match {
+    accountRepo.findAccountByEmail(loginRequestDTO.email) match {
       case Some(account) => passwordHash.verify(loginRequestDTO.password, account.password)
       case _ => false
     }

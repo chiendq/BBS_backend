@@ -26,7 +26,7 @@ object JWTImpl extends JWT {
         .getBody
         .getSubject
     } match {
-      case Failure(exception) => throw AuthenticationFailedException("Authentication failed!")
+      case Failure(_) => throw AuthenticationFailedException("Authentication failed!")
       case Success(value) => AccountId(value)
     }
   }
