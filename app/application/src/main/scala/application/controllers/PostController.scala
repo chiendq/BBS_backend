@@ -42,9 +42,7 @@ class PostController @Inject()(authActions: AuthActions,
 
   def getPostById(id: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     postService.getPostById(UniqueId(id)) match {
-      case Some(value) => {
-        Ok(Json.toJson(toDto(value)))
-      }
+      case Some(value) => Ok(Json.toJson(toDto(value)))
       case None => NotFound(s"Post not found with id $id")
     }
   }
@@ -72,7 +70,7 @@ class PostController @Inject()(authActions: AuthActions,
       Created("Create post successfully!")
     }catch {
       case postExcept: PostException => BadRequest(postExcept.getMessage)
-      case _: Throwable => BadRequest
+      case _: Throwable => InternalServerError
     }
   }
 

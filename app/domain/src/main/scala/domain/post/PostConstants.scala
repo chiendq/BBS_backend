@@ -8,7 +8,6 @@ object PostConstants {
   val UPDATED_ON = "updatedOn"
   val ACCOUNT_ID = "accountId"
 
-
   val THUMBNAIL = "thumbnail"
   val THUMBNAIL_PNG = "png"
   val THUMBNAIL_JPEG = "jpeg"

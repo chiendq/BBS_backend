@@ -5,8 +5,6 @@ import domain.post.PostConstants.{ACCOUNT_ID, AUTHOR_NAME, CONTENT, THUMBNAIL, T
 import domain.post.dtos.PostCreation
 import play.api.data.Form
 import play.api.data.Forms.{ignored, mapping, text}
-import play.api.libs.json.{Json, OFormat}
-
 
 object PostCreationFormat {
   def postCreationForm(accountId: UniqueId, thumbnail: String) = Form[PostCreation](
