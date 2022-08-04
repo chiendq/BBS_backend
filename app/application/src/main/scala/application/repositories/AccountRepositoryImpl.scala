@@ -2,16 +2,16 @@ package application.repositories
 
 import domain.account.AccountConstants.{EMAIL, PASSWORD, USERNAME}
 import domain.account.AccountRepository
-import domain.account.models.{Account, AccountId}
+import domain.account.models.Account
 import domain.common.CommonConstants.ID
-import domain.common.valueObjects.Email
+import domain.common.valueObjects.{Email, UniqueId}
 import infrastructure.mySqlDao.AccountDao._
 import scalikejdbc.{scalikejdbcSQLInterpolationImplicitDef, sqls}
 
 import scala.util.Try
 
 class AccountRepositoryImpl extends AccountRepository{
-  override def save(account: Account): Try[AccountId] = {
+  override def save(account: Account): Try[UniqueId] = {
     Try {
       createWithAttributes(
         Symbol(ID)        -> account.id.value,

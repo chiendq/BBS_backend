@@ -1,8 +1,8 @@
 package application.jwt
 
 import application.jwt.SecurityConstants.{EXPIRATION_TIME, SECRET, TOKEN_PREFIX}
-import domain.account.models.AccountId
 import domain.auth.JWT
+import domain.common.valueObjects.UniqueId
 import domain.exceptions.account.AuthenticationFailedException
 import io.jsonwebtoken.{Jwts, SignatureAlgorithm}
 
@@ -10,7 +10,7 @@ import java.util.Date
 import scala.util.{Failure, Success, Try}
 
 object JWTImpl extends JWT {
-  override def generate(accountId: AccountId): String = {
+  override def generate(accountId: UniqueId): String = {
     Jwts.builder()
       .setSubject(accountId.value)
       .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
@@ -18,7 +18,7 @@ object JWTImpl extends JWT {
       .compact()
   }
 
-  override def validate(token: String): Try[AccountId] = Try {
+  override def validate(token: String): Try[UniqueId] = Try {
     Try {
       Jwts.parser()
         .setSigningKey(SECRET)
@@ -27,7 +27,7 @@ object JWTImpl extends JWT {
         .getSubject
     } match {
       case Failure(_) => throw AuthenticationFailedException("Authentication failed!")
-      case Success(value) => AccountId(value)
+      case Success(value) => UniqueId(value)
     }
   }
 }

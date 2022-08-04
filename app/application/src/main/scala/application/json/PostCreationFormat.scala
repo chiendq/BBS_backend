@@ -1,6 +1,6 @@
 package application.json
 
-import domain.account.models.AccountId
+import domain.common.valueObjects.UniqueId
 import domain.post.PostConstants.{ACCOUNT_ID, AUTHOR_NAME, CONTENT, THUMBNAIL, TITLE}
 import domain.post.dtos.PostCreation
 import play.api.data.Form
@@ -9,7 +9,7 @@ import play.api.libs.json.{Json, OFormat}
 
 
 object PostCreationFormat {
-  def postCreationForm(accountId: AccountId, thumbnail: String) = Form[PostCreation](
+  def postCreationForm(accountId: UniqueId, thumbnail: String) = Form[PostCreation](
     mapping(
       ACCOUNT_ID -> ignored(accountId),
       TITLE -> text(maxLength = 150, minLength = 1),

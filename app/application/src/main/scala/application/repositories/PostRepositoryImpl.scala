@@ -2,12 +2,12 @@ package application.repositories
 
 import domain.common.CommonConstants.ID
 import domain.common.Paged
+import domain.common.valueObjects.UniqueId
 import domain.post.PostConstants._
 import domain.post.PostRepository
 import domain.post.dtos.PostCreation
-import domain.post.models.{Post, PostId}
+import domain.post.models.{Post}
 import infrastructure.mySqlDao.PostDao
-
 import org.joda.time.DateTime
 import skinny.Pagination
 
@@ -29,9 +29,9 @@ class PostRepositoryImpl () extends PostRepository {
     ((records + pageSize - 1) / pageSize).toInt
   }
 
-  override def getPostById(id: String): Option[Post] = PostDao.findById(PostId(id))
+  override def getPostById(id: UniqueId): Option[Post] = PostDao.findById(id)
 
-  override def createPost(postCreation: PostCreation): Try[PostId] = {
+  override def createPost(postCreation: PostCreation): Try[UniqueId] = {
     Try{
       val uuid = UUID.randomUUID().toString
       val currentDateTime = DateTime.now()

@@ -6,6 +6,7 @@ import application.json.PagedFormat._
 import application.json.PostCreationFormat.postCreationForm
 import application.json.PostDTOFormat._
 import application.services.AuthServiceImpl
+import domain.common.valueObjects.UniqueId
 import domain.exceptions.post.{InvalidImageTypeException, PostException, RequestTypeMissMatchException}
 import domain.post.PostConstants._
 import domain.post.services.PostService
@@ -40,7 +41,7 @@ class PostController @Inject()(authActions: AuthActions,
   }
 
   def getPostById(id: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    postService.getPostById(id) match {
+    postService.getPostById(UniqueId(id)) match {
       case Some(value) => {
         Ok(Json.toJson(toDto(value)))
       }

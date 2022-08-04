@@ -1,9 +1,9 @@
 package domain.post.dtos
 
-import domain.account.models.AccountId
+import domain.common.valueObjects.UniqueId
 
 case class PostCreation(
-                         accountId: AccountId,
+                         accountId: UniqueId,
                          title: String,
                          authorName: String,
                          content: String,

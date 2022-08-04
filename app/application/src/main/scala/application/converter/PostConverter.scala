@@ -12,7 +12,7 @@ object PostConverter {
       post.authorName,
       toJodaDateTimeString(post.createdAt),
       toJodaDateTimeString(post.updatedOn),
-      post.thumbnail
+      post.thumbnail.value
     )
   }
 }

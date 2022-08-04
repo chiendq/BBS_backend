@@ -1,14 +1,15 @@
 package infrastructure.mySqlDao
 
 import domain.account.models.Account
-import domain.post.models.{Post, PostId}
+import domain.common.valueObjects.UniqueId
+import domain.post.models.{Post}
 import scalikejdbc.WrappedResultSet
 import skinny.orm.{Alias, SkinnyCRUDMapperWithId}
 
 import javax.inject.Singleton
 
 @Singleton
-object PostDao extends SkinnyCRUDMapperWithId[PostId, Post] {
+object PostDao extends SkinnyCRUDMapperWithId[UniqueId, Post] {
 
   override lazy val tableName = "post"
 
@@ -18,15 +19,15 @@ object PostDao extends SkinnyCRUDMapperWithId[PostId, Post] {
 
   override def extract(rs: WrappedResultSet, n: scalikejdbc.ResultName[Post]): Post =
     Post(
-      id = PostId(rs.get(n.id)),
+      id = UniqueId(rs.get(n.id)),
       title = rs.get(n.title),
       content = rs.get(n.content),
       authorName = rs.get(n.authorName),
       createdAt = rs.get(n.createdAt),
       updatedOn = rs.get(n.updatedOn),
-      thumbnail = rs.get(n.thumbnail))
+      thumbnail = UniqueId(rs.get(n.thumbnail)))
 
-  override def idToRawValue(id: PostId): Any = id.value
+   override def idToRawValue(id: UniqueId): Any = id.value
 
-  override def rawValueToId(value: Any): PostId = PostId(value.toString)
+  override def rawValueToId(value: Any): UniqueId = UniqueId(value.toString)
 }

@@ -1,7 +1,6 @@
 package application.controllers.actions
 
-
-import domain.account.models.AccountId
+import domain.common.valueObjects.UniqueId
 import play.api.mvc.{Request, WrappedRequest}
 
-case class UserRequest[A](accountId: AccountId, request: Request[A]) extends WrappedRequest[A](request)
+case class UserRequest[A](accountId: UniqueId, request: Request[A]) extends WrappedRequest[A](request)
