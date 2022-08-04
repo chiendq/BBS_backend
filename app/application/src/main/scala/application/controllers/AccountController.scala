@@ -26,7 +26,7 @@ class AccountController @Inject()(val controllerComponents: ControllerComponents
       } catch {
       case dupEmail : DuplicatedEmailException => BadRequest(dupEmail.message)
       case jsExcept: JsResultException => BadRequest(jsExcept.errors.head._2.head.message)
-      case _: Throwable => BadRequest
+      case th: Throwable => InternalServerError
     }
   }
 }

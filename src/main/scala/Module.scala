@@ -1,5 +1,5 @@
 import application.jwt.{JWTImpl, PasswordHashImpl}
-import application.repository.{AccountRepositoryImpl, PostRepositoryImpl}
+import application.repositories.{AccountRepositoryImpl, PostRepositoryImpl}
 import application.services.AuthServiceImpl
 import com.google.inject.AbstractModule
 import domain.account.serivces.{AccountService, AccountServiceImpl}

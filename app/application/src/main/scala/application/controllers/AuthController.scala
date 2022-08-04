@@ -38,7 +38,8 @@ class AuthController @Inject()(authService: AuthService,
       Ok(Json.toJson(loginResponseDTO)).withCookies(cookie)
     } catch {
       case authFailed : AuthenticationFailedException => Unauthorized(authFailed.message)
-      case _: Throwable => BadRequest
+      case illArEx: IllegalArgumentException => BadRequest(illArEx.getMessage)
+      case _: Throwable => InternalServerError
     }
   }
 

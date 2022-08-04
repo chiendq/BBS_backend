@@ -21,7 +21,7 @@ lazy val root = (project in file("."))
   .dependsOn(application,domain,infrastructure)
   .aggregate(application,domain,infrastructure)
   .settings(commonSettings)
-  .settings(Assets / resourceDirectory := baseDirectory.value / "public",)
+  .settings(Assets / resourceDirectory := baseDirectory.value / "public")
 
 lazy val application = (project in file("app/application"))
   .dependsOn(domain, infrastructure)

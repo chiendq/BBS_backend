@@ -1,4 +1,4 @@
-package application.repository
+package application.repositories
 
 import domain.common.CommonConstants.ID
 import domain.common.Paged
