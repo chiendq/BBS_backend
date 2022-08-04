@@ -36,7 +36,10 @@ class PostController @Inject()(authActions: AuthActions,
       postService.getPaginatedPostList(pageSize, pageNumber).get.map(toDto)
     } match {
       case Success(posts) => Ok(Json.toJson(posts))
-      case Failure(_) => BadRequest
+      case Failure(e) => {
+        e.printStackTrace()
+        BadRequest
+      }
     }
   }
 

@@ -68,29 +68,5 @@ class AccountValueObjectsTest extends Specification {
     }
   }
 
-  "Paged" should {
-    "apply success" in {
-      "empty item" in {
-        Paged(items = Seq(1,2,3,4), count = 0, page = 1, pageSize = 4).totalPage == 0
-      }
 
-    }
-    "apply failure" in {
-      "Number of items not equals page size" in {
-        Paged(items = Seq(1,2,3,4,5), count = 0, page = 1, pageSize = 4) must throwAn[IllegalArgumentException]("Number of items not equals page size")
-      }
-    }
-  }
-
-  "Title" should {
-    "apply empty failure" in {
-      Title(mkString(0)) must throwAn[IllegalArgumentException]("Title can not left blank")
-    }
-    "apply over-size failure" in {
-      Title(mkString(151)) must throwAn[IllegalArgumentException]("Title can not over 150 characters")
-    }
-    "apply success" in {
-      Title(mkString(20)) must_!= throwAn[Throwable]
-    }
-  }
 }

@@ -1,5 +1,6 @@
 package domain.post
 
+import domain.common.Paged
 import domain.common.valueObjects.UniqueId
 import domain.post.valueObjects.{AuthorName, Content, Title}
 import org.specs2.mutable.Specification
@@ -48,4 +49,5 @@ class PostValueObjectsTest() extends Specification{
       Content(mkString(31293)) must_!= throwAn[IllegalArgumentException]
     }
   }
+
 }
