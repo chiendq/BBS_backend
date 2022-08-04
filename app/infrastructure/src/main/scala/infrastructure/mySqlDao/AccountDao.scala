@@ -1,7 +1,8 @@
 package infrastructure.mySqlDao
 
 import domain.account.models.Account
-import domain.common.valueObjects.{Email, HashedPassword, RawPassword, UniqueId, Username}
+import domain.account.valueObjects.{Email, HashedPassword, RawPassword, Username}
+import domain.common.valueObjects.UniqueId
 import scalikejdbc.WrappedResultSet
 import skinny.orm.{Alias, SkinnyCRUDMapperWithId}
 

@@ -1,3 +1,3 @@
-package domain.common.valueObjects
+package domain.account.valueObjects
 
 case class HashedPassword(value: String)

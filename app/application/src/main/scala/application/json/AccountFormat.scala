@@ -1,7 +1,7 @@
 package application.json
 
 import domain.account.dtos.{LoginRequestDTO, LoginResponseDTO, RegisterPayload}
-import domain.common.valueObjects.{Email, RawPassword, Username}
+import domain.account.valueObjects.{Email, RawPassword, Username}
 import play.api.libs.json.{JsResult, JsValue, Json, Reads, Writes}
 
 object AccountFormat {

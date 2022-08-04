@@ -1,7 +1,7 @@
 package domain.auth
 
 import domain.account.dtos.LoginRequestDTO
-import domain.common.valueObjects.Email
+import domain.account.valueObjects.Email
 
 trait AuthService {
   def generateJwtToken(email: Email): String

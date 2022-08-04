@@ -1,6 +1,6 @@
 package domain.auth
 
-import domain.common.valueObjects.{HashedPassword, RawPassword}
+import domain.account.valueObjects.{HashedPassword, RawPassword}
 
 trait PasswordHash {
   def make(password: String): String

@@ -2,7 +2,8 @@ package infrastructure.mySqlDao
 
 import domain.account.models.Account
 import domain.common.valueObjects.UniqueId
-import domain.post.models.{Post}
+import domain.post.models.Post
+import domain.post.valueObjects.{AuthorName, Content, Title}
 import scalikejdbc.WrappedResultSet
 import skinny.orm.{Alias, SkinnyCRUDMapperWithId}
 
@@ -20,9 +21,9 @@ object PostDao extends SkinnyCRUDMapperWithId[UniqueId, Post] {
   override def extract(rs: WrappedResultSet, n: scalikejdbc.ResultName[Post]): Post =
     Post(
       id = UniqueId(rs.get(n.id)),
-      title = rs.get(n.title),
-      content = rs.get(n.content),
-      authorName = rs.get(n.authorName),
+      title = Title(rs.get(n.title)),
+      content = Content(rs.get(n.content)),
+      authorName = AuthorName(rs.get(n.authorName)),
       createdAt = rs.get(n.createdAt),
       updatedOn = rs.get(n.updatedOn),
       thumbnail = UniqueId(rs.get(n.thumbnail)))

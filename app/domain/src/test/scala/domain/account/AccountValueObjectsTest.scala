@@ -1,7 +1,9 @@
 package domain.account
 
+import domain.account.valueObjects.{Email, Username}
 import domain.common.Paged
-import domain.common.valueObjects.{Email, Title, UniqueId, Username}
+import domain.common.valueObjects.UniqueId
+import domain.post.valueObjects.Title
 import org.specs2.mutable.Specification
 
 class AccountValueObjectsTest extends Specification {
@@ -11,9 +13,10 @@ class AccountValueObjectsTest extends Specification {
   "UniqueId" should {
     "apply failure" in {
       UniqueId(mkString(50)) must throwAn[IllegalArgumentException]
+      UniqueId(mkString(11)) must throwAn[IllegalArgumentException]
     }
     "apply success" in {
-      UniqueId(mkString(36)).value.length == 36
+      UniqueId(mkString(36)) must_!= throwAn[IllegalArgumentException]("Invalid Id length")
     }
   }
 

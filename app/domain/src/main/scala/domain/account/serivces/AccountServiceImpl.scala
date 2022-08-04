@@ -2,8 +2,9 @@ package domain.account.serivces
 
 import domain.account.AccountRepository
 import domain.account.models.Account
+import domain.account.valueObjects.{Email, HashedPassword, RawPassword, Username}
 import domain.auth.PasswordHash
-import domain.common.valueObjects.{Email, HashedPassword, RawPassword, UniqueId, Username}
+import domain.common.valueObjects.UniqueId
 import domain.exceptions.account.DuplicatedEmailException
 
 import java.util.UUID

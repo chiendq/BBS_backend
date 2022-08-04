@@ -7,9 +7,9 @@ object PostConverter {
 
   def toDto(post: Post): PostDTO = {
     PostDTO(post.id.value,
-      post.title,
-      post.content,
-      post.authorName,
+      post.title.value,
+      post.content.value,
+      post.authorName.value,
       toJodaDateTimeString(post.createdAt),
       toJodaDateTimeString(post.updatedOn),
       post.thumbnail.value
