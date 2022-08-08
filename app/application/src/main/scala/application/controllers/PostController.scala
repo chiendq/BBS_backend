@@ -5,7 +5,6 @@ import application.converter.PostConverter._
 import application.json.PagedFormat._
 import application.json.PostCreationFormat.postCreationForm
 import application.json.PostDTOFormat._
-import application.services.AuthServiceImpl
 import domain.common.valueObjects.UniqueId
 import domain.exceptions.post.{InvalidImageTypeException, PostException, RequestTypeMissMatchException}
 import domain.post.PostConstants._
@@ -24,7 +23,6 @@ import scala.util.{Failure, Success, Try}
 
 @Singleton
 class PostController @Inject()(authActions: AuthActions,
-                               authService: AuthServiceImpl,
                                postService: PostService,
                                controllerComponents: ControllerComponents)
   extends AbstractController(controllerComponents) {
@@ -36,10 +34,7 @@ class PostController @Inject()(authActions: AuthActions,
       postService.getPaginatedPostList(pageSize, pageNumber).get.map(toDto)
     } match {
       case Success(posts) => Ok(Json.toJson(posts))
-      case Failure(e) => {
-        e.printStackTrace()
-        BadRequest
-      }
+      case Failure(e) => BadRequest
     }
   }
 
@@ -67,13 +62,18 @@ class PostController @Inject()(authActions: AuthActions,
       ).bindFromRequest(dataPart)
 
       form.fold(
-        form => throw new RuntimeException(form.errors.mkString(", ")),
+        form => throw RequestTypeMissMatchException(form.errors.head.key),
         postCreation => postService.createPost(postCreation)
       )
       Created("Create post successfully!")
     }catch {
       case postExcept: PostException => BadRequest(postExcept.getMessage)
-      case _: Throwable => InternalServerError
+      case req: RequestTypeMissMatchException => BadRequest(req.message)
+      case th: Throwable => {
+        th.printStackTrace()
+        InternalServerError
+      }
+
     }
   }
 

@@ -5,6 +5,7 @@ GET     /posts/:id                          application.controllers.PostControll
 + nocsrf
 POST    /posts                              application.controllers.PostController.createPost()
 
+GET     /ping                               application.controllers.AuthController.isLoggedIn()
 POST    /login                              application.controllers.AuthController.login()
 DELETE  /logout                             application.controllers.AuthController.logout()
 POST    /register                           application.controllers.AccountController.register()

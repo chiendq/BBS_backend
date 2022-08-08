@@ -3,14 +3,12 @@ package application.controllers
 import application.json.AccountFormat._
 import domain.account.dtos.RegisterPayload
 import domain.account.serivces.AccountServiceImpl
-import domain.exceptions.account.DuplicatedEmailException
+import domain.exceptions.account.DuplicatedException
 import play.api.Logger
-import play.api.libs.json.{JsError, JsPath, JsResultException, JsValue, Json, JsonValidationError, Writes}
+import play.api.libs.json.JsResultException
 import play.api.mvc._
 
-import collection.Seq
 import javax.inject._
-import scala.util.{Failure, Success, Try}
 
 @Singleton
 class AccountController @Inject()(val controllerComponents: ControllerComponents,
@@ -24,9 +22,12 @@ class AccountController @Inject()(val controllerComponents: ControllerComponents
       accountService.save(register.email, register.username, register.password)
       Ok("Registered")
       } catch {
-      case dupEmail : DuplicatedEmailException => BadRequest(dupEmail.message)
+      case ill : IllegalArgumentException => BadRequest(ill.getMessage)
       case jsExcept: JsResultException => BadRequest(jsExcept.errors.head._2.head.message)
-      case th: Throwable => InternalServerError
+      case th: Throwable => {
+        th.printStackTrace()
+        InternalServerError
+      }
     }
   }
 }

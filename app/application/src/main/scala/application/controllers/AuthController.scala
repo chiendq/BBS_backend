@@ -1,5 +1,6 @@
 package application.controllers
 
+import application.controllers.actions.AuthActions
 import application.json.AccountFormat._
 import application.jwt.SecurityConstants._
 import domain.account.dtos.{LoginRequestDTO, LoginResponseDTO}
@@ -13,7 +14,8 @@ import skinny.logging.Logger
 
 import javax.inject.Inject
 
-class AuthController @Inject()(authService: AuthService,
+class AuthController @Inject()(authActions: AuthActions,
+                               authService: AuthService,
                                val controllerComponents: ControllerComponents,
                                accountService: AccountService)
   extends BaseController {
@@ -49,7 +51,12 @@ class AuthController @Inject()(authService: AuthService,
 
   def logout(): Action[AnyContent] = Action { implicit request: Request[AnyContent] => {
     Ok.withCookies(Cookie(TOKEN_NAME, ""))
+    }
   }
+
+  def isLoggedIn(): Action[AnyContent] = authActions { implicit request: Request[AnyContent] => {
+      Ok
+    }
   }
 }
 
