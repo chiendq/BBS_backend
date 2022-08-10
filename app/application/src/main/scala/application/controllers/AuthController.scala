@@ -2,7 +2,7 @@ package application.controllers
 
 import application.controllers.actions.AuthActions
 import application.json.AccountFormat._
-import application.jwt.SecurityConstants._
+import domain.auth.SecurityConstants._
 import domain.account.dtos.{LoginRequestDTO, LoginResponseDTO}
 import domain.account.serivces.AccountService
 import domain.auth.AuthService

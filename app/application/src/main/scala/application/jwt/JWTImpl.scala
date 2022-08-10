@@ -1,6 +1,6 @@
 package application.jwt
 
-import application.jwt.SecurityConstants.{EXPIRATION_TIME, SECRET, TOKEN_PREFIX}
+import domain.auth.SecurityConstants.{EXPIRATION_TIME, SECRET, TOKEN_PREFIX}
 import domain.auth.JWT
 import domain.common.valueObjects.UniqueId
 import domain.exceptions.account.AuthenticationFailedException

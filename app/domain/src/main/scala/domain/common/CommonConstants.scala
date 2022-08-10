@@ -1,6 +1,6 @@
 package domain.common
 
-object CommonConstants {
+object CommonConstants extends Enumeration {
 
   val ID = "id"
 }

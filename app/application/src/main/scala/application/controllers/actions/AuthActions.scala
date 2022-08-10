@@ -1,6 +1,6 @@
 package application.controllers.actions
 
-import application.jwt.SecurityConstants.TOKEN_NAME
+import domain.auth.SecurityConstants.TOKEN_NAME
 import com.auth0.jwt.exceptions.JWTVerificationException
 import domain.auth.JWT
 import play.api.Logger
