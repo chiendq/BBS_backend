@@ -20,12 +20,15 @@ import java.nio.file.Paths
 import java.util.UUID
 import javax.inject._
 import scala.util.{Failure, Success, Try}
+import application.form
 
 @Singleton
 class PostController @Inject()(authActions: AuthActions,
                                postService: PostService,
                                controllerComponents: ControllerComponents)
   extends AbstractController(controllerComponents) {
+
+  import form._
 
   lazy val logger: Logger = Logger(getClass)
 
@@ -59,13 +62,18 @@ class PostController @Inject()(authActions: AuthActions,
       val form = postCreationForm(
         request.accountId,
         thumbnailUUID
-      ).bindFromRequest(dataPart)
-
-      form.fold(
-        form => throw RequestTypeMissMatchException(form.errors.head.key),
-        postCreation => postService.createPost(postCreation)
       )
-      Created("Create post successfully!")
+
+      form.valid { postCreation =>
+        postService.createPost(postCreation)
+        Created("Create post successfully!")
+      }
+
+//      form.fold(
+//        form => throw RequestTypeMissMatchException(form.errors.head.key),
+//        postCreation => postService.createPost(postCreation)
+//      )
+//      Created("Create post successfully!")
     }catch {
       case postExcept: PostException => BadRequest(postExcept.getMessage)
       case req: RequestTypeMissMatchException => BadRequest(req.message)
