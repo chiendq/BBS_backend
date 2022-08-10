@@ -1,13 +1,11 @@
-package application.services
+package domain.auth
 
-import domain.auth.{AuthService, JWT, PasswordHash}
-
-import javax.inject.{Inject, Singleton}
 import domain.account.AccountRepository
 import domain.account.dtos.LoginRequestDTO
-import domain.account.valueObjects.{Email, HashedPassword}
-import scala.util.Random
-import scala.concurrent.{ExecutionContext, Future}
+import domain.account.valueObjects.Email
+
+import javax.inject.{Inject, Singleton}
+
 @Singleton
 class AuthServiceImpl @Inject()(
                                  accountRepo : AccountRepository,

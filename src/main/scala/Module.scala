@@ -1,10 +1,9 @@
 import application.jwt.{JWTImpl, PasswordHashImpl}
 import application.repositories.{AccountRepositoryImpl, PostRepositoryImpl}
-import application.services.AuthServiceImpl
 import com.google.inject.AbstractModule
 import domain.account.serivces.{AccountService, AccountServiceImpl}
 import domain.account.AccountRepository
-import domain.auth.{AuthService, JWT, PasswordHash}
+import domain.auth.{AuthService, AuthServiceImpl, JWT, PasswordHash}
 import domain.post.services.{PostService, PostServiceImpl}
 import domain.post.PostRepository
 import play.api.Logger
