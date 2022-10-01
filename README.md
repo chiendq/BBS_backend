@@ -1,6 +1,3 @@
-# chien_dq_bbs_backend
+# Bulletin Board System API
 
-
-
-## Authors and acknowledgment
-### Chien Dao
+This repo  support for learning Scala language, Play Framework, Skinny ORM to traning to my DDD knowledge.
